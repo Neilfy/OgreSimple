@@ -9,15 +9,13 @@ namespace OgreSimple
 		, mNear(0.1f)
 		, mFar(100)
 		, mFovy(ME_PI * 0.5f)
+	    , mViewport(0, 0, 1, 1)
 		, mFrustum()
-		, mViewport(0, 0, 1, 1)
 		, mViewportResized(false)
 		, mMatProjDirty(true)
 		, mMatViewDirty(true)
 	{
-		float h = mNear * tan(mFovy * 0.5f) * 2.0f;
-		float w = h * mViewport.GetWidth() / mViewport.GetHeight();
-		mFrustum.Set(mNear, mFar, w, h);
+		mFrustum.Set(mNear, mFar, 1.f, 1.f);
 	};
 
 
@@ -95,21 +93,13 @@ namespace OgreSimple
         }
     }
 
-	void Camera::SetViewportSize(uint32 left, uint32 top, uint32 width, uint32 height)
+	void Camera::SetViewport(const Viewport& vp)
 	{
-	    if ((left == mViewport.GetLeft())
-            && (top == mViewport.GetTop())
-            && (width == mViewport.GetWidth())
-            && (height == mViewport.GetHeight()))
-        {
-            return;
-        }
-
-		mViewport.SetSize(left, top, width, height);
+		mViewport = vp;
 		mViewportResized = true;
 
 		float h = mNear * tan(mFovy * 0.5f);
-		float w = h * width / height;
+		float w = h * vp.GetWidth() / vp.GetHeight();
 		mFrustum.Set(mNear, mFar, w, h);
 
 		mMatProjDirty = true;

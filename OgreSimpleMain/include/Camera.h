@@ -22,11 +22,6 @@ namespace OgreSimple
 			return mPosition;
 		}
 
-		const Viewport& GetViewport(void) const
-		{
-			return mViewport;
-		}
-
 		const Matrix4& GetProjectionMatrix(void);
 		const Matrix4& GetViewMatrix(void);
 
@@ -66,19 +61,12 @@ namespace OgreSimple
 		void SetFovy(float fovy);
 		void SetClips(float fNear, float fFar);
 
-		void SetViewportSize(uint32 left, uint32 top, uint32 width, uint32 height);
-		void SetViewportColor(const Color& color)
-		{
-			mViewport.SetBackColor(color);
-		}
+		void SetViewport(const Viewport& vp);
 
         void ClearViewportResizedFlag(void)
         {
             mViewportResized = false;
         }
-
-		//void WorldToWindow(const Vector3& worldCoord, Vector3& windowCoord);
-		//bool WindowToWorld(const Vector3& windowCoord, Vector3& worldCoord);
 
 	protected:
 		Vector3		mPosition;

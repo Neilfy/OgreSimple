@@ -20,9 +20,9 @@ namespace OgreSimple
 		
 	}
 	
-	void GLRenderSystem::setViewport(Viewport* vp)
+	void GLRenderSystem::setViewport(const Viewport& vp)
 	{
-		glViewport(vp->GetLeft(), vp->GetTop(), vp->GetWidth(), vp->GetHeight());
+		glViewport(vp.GetLeft(), vp.GetTop(), vp.GetWidth(), vp.GetHeight());
 
 	}
 
@@ -36,7 +36,7 @@ namespace OgreSimple
 
 		glLoadIdentity();
 
-		glTranslatef(0.0f,0.0f,6.0f);
+		//glTranslatef(0.0f,0.0f,6.0f);
 
 		glBegin(GL_TRIANGLES);							// »æÖÆÈý½ÇÐÎ
 

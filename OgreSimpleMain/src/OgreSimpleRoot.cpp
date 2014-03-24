@@ -1,7 +1,8 @@
 #include <assert.h>
+#include <stdio.h>
 //#include "Common.h"
 #include "OgreSimpleRoot.h"
-#include "Viewport.h"
+
 #include "SceneManager.h"
 #include "Camera.h"
 //#include "FrameListener.h"
@@ -18,12 +19,12 @@ namespace OgreSimple
 	OgreSimpleRoot * OgreSimpleRoot::ms_Singleton = NULL;
 
 	OgreSimpleRoot::OgreSimpleRoot(void)
+						:mViewport(0, 0, 0, 0)
 	{
 		ms_Singleton = this;
 		mSceneManager = NULL;
 		mCamera = NULL;
 		mRenderer = NULL;
-		mViewport = NULL;
 		//mMeshManager = new MeshManager();
 		//mMatManager = new MaterialManager;
 
@@ -50,10 +51,6 @@ namespace OgreSimple
 			delete mRenderer;
 		}
 
-		if(mViewport)
-		{
-			delete mViewport;
-		}
 		//delete mMeshManager;
 		//delete mMatManager;
 		//delete mEntityFactory;
@@ -64,10 +61,14 @@ namespace OgreSimple
 	
 	void OgreSimpleRoot::setSurfaceSize(int width, int height)
 	{
-		if(!mViewport)
+		if(!mCamera)
 		{
-			mViewport = new Viewport(0, 0, width, height, Color::Black, 0.1, 100.0);
+			printf("you have to creat a camera first!");
+			return ;
 		}
+		mViewport.SetSize(0, 0, width, height);
+		mCamera->SetViewport(mViewport);
+
 	}
 	
 	void OgreSimpleRoot::setRenderSystem(RenderSystem* system)

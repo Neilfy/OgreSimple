@@ -26,7 +26,7 @@ namespace OgreSimple
 		//void clearFrameBuffer(unsigned int buffers, 
 		//	const ColourValue& colour = ColourValue::Black, 
 		//	float depth = 1.0f, unsigned short stencil = 0);
-		void setViewport(Viewport* vp);
+		void setViewport(const Viewport& vp);
 		
 	};
 }

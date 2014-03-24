@@ -15,10 +15,9 @@ namespace OgreSimple
 
 	}
 
-	void SceneManager::renderScene(RenderSystem* rs, Camera* cam, Viewport* vp)
+	void SceneManager::renderScene(RenderSystem* rs, Camera* cam, Viewport& vp)
 	{
 		mCamera = cam;
-		mViewport = vp;
 		mRenderSystem = rs;
 		rs->setViewport(vp);
 		rs->render();

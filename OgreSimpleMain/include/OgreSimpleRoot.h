@@ -2,6 +2,7 @@
 #define  OGRESIMPLE_ROOT_H
 
 #include<string>
+#include "Viewport.h"
 namespace OgreSimple
 {
 	class SceneManager;
@@ -18,7 +19,7 @@ namespace OgreSimple
 		Camera* mCamera;
 		RenderSystem* mRenderer;
 		static OgreSimpleRoot *ms_Singleton;
-		Viewport* mViewport;
+		Viewport mViewport;
 		MeshManager* mMeshManager;
 		MaterialManager* mMatManager;
 		std::string m_BasePath;

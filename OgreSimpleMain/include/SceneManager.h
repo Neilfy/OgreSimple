@@ -20,14 +20,11 @@ namespace OgreSimple
 		Camera* mCamera;
 		
 	protected:
-		/// Instance name
-		Viewport* mViewport;
-		
 
 		//virtual void renderSingleObject(Renderable* rend);
 	public:
 		
-		virtual void renderScene(RenderSystem* rs, Camera* cam, Viewport* vp);
+		virtual void renderScene(RenderSystem* rs, Camera* cam, Viewport& vp);
 
 	};
 }

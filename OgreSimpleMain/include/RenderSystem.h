@@ -3,6 +3,7 @@
 
 #include "OgreSimpleMath.h"
 #include "Color.h"
+#include "Viewport.h"
 #include<string>
 namespace OgreSimple
 {
@@ -17,7 +18,7 @@ namespace OgreSimple
 		virtual void initialise();
 		virtual void render();
 
-		virtual void setViewport(Viewport* vp) = 0;
+		virtual void setViewport(const Viewport& vp) = 0;
 
 	};
 }
