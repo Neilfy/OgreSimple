@@ -16,96 +16,89 @@
 //#include "Light.h"
 namespace OgreSimple
 {
-	OgreSimpleRoot * OgreSimpleRoot::ms_Singleton = NULL;
+    OgreSimpleRoot * OgreSimpleRoot::ms_Singleton = NULL;
 
-	OgreSimpleRoot::OgreSimpleRoot(void)
-						:mViewport(0, 0, 0, 0)
-	{
-		ms_Singleton = this;
-		mSceneManager = NULL;
-		mCamera = NULL;
-		mRenderer = NULL;
-		//mMeshManager = new MeshManager();
-		//mMatManager = new MaterialManager;
+    OgreSimpleRoot::OgreSimpleRoot(void)
+                        :mViewport(0, 0, 0, 0)
+    {
+        ms_Singleton = this;
+        mSceneManager = NULL;
+        mCamera = NULL;
+        mRenderer = NULL;
+        //mMeshManager = new MeshManager();
+        //mMatManager = new MaterialManager;
 
-		//mEntityFactory = new EntityFactory();
-		//addMovableObjectFactory(mEntityFactory);
-		//mLightFactory = new LightFactory();
-		//addMovableObjectFactory(mLightFactory);
-	}
+        //mEntityFactory = new EntityFactory();
+        //addMovableObjectFactory(mEntityFactory);
+        //mLightFactory = new LightFactory();
+        //addMovableObjectFactory(mLightFactory);
+    }
 
-	OgreSimpleRoot::~OgreSimpleRoot(void)
-	{
-		if(mSceneManager)
-		{
-			delete mSceneManager;
-		}
+    OgreSimpleRoot::~OgreSimpleRoot(void)
+    {
+        if(mSceneManager)
+        {
+            delete mSceneManager;
+        }
 
-		if(mCamera)
-		{
-			delete mCamera;
-		}
+        if(mCamera)
+        {
+            delete mCamera;
+        }
 
-		if(mRenderer)
-		{
-			delete mRenderer;
-		}
+        if(mRenderer)
+        {
+            delete mRenderer;
+        }
 
-		//delete mMeshManager;
-		//delete mMatManager;
-		//delete mEntityFactory;
-		//delete mLightFactory;
-		//delete mActiveRenderer;
-		ms_Singleton = 0;
-	}
-	
-	void OgreSimpleRoot::setSurfaceSize(int width, int height)
-	{
-		if(!mCamera)
-		{
-			printf("you have to creat a camera first!");
-			return ;
-		}
-		mViewport.SetSize(0, 0, width, height);
-		mCamera->SetViewport(mViewport);
+        //delete mMeshManager;
+        //delete mMatManager;
+        //delete mEntityFactory;
+        //delete mLightFactory;
+        //delete mActiveRenderer;
+        ms_Singleton = 0;
+    }
+    
+    void OgreSimpleRoot::setSurfaceSize(int width, int height)
+    {
+        mViewport.SetSize(0, 0, width, height);
+    }
+    
+    void OgreSimpleRoot::setRenderSystem(RenderSystem* system)
+    {
+        if(!mRenderer)
+        {
+            mRenderer = system;
+        }
+    }
 
-	}
-	
-	void OgreSimpleRoot::setRenderSystem(RenderSystem* system)
-	{
-		if(!mRenderer)
-		{
-			mRenderer = system;
-		}
-	}
+    SceneManager* OgreSimpleRoot::createSceneManager()
+    {
+        if(!mSceneManager)
+        {
+            mSceneManager = new SceneManager();
+        }
+        return mSceneManager;
+    }
 
-	SceneManager* OgreSimpleRoot::createSceneManager()
-	{
-		if(!mSceneManager)
-		{
-			mSceneManager = new SceneManager();
-		}
-		return mSceneManager;
-	}
+    Camera* OgreSimpleRoot::createCamera()
+    {
+        if(!mCamera)
+        {
+            mCamera = new Camera();
+        }
+        return mCamera;
+    }
 
-	Camera* OgreSimpleRoot::createCamera()
-	{
-		if(!mCamera)
-		{
-			Camera *mCamera = new Camera();
-		}
-		return mCamera;
-	}
+    Camera* OgreSimpleRoot::getCamera() const
+    {
+        return mCamera;
+    }
 
-	Camera* OgreSimpleRoot::getCamera() const
-	{
-		return mCamera;
-	}
-
-	void OgreSimpleRoot::renderScene()
-	{
-		mSceneManager->renderScene(mRenderer, mCamera, mViewport);
-	}
+    void OgreSimpleRoot::renderScene()
+    {
+        mSceneManager->renderScene(mRenderer, mCamera, mViewport);
+    }
 
 }
 

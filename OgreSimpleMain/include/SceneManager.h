@@ -6,26 +6,26 @@
 //#include "ColourValue.h"
 namespace OgreSimple
 {
-	class RenderSystem;
-	class Viewport;
-	class Camera;
-	class SceneManager
-	{
-	public:
-		SceneManager();
-		~SceneManager();
+    class RenderSystem;
+    class Viewport;
+    class Camera;
+    class SceneManager
+    {
+    public:
+        SceneManager();
+        ~SceneManager();
 
-	private:
-		RenderSystem* mRenderSystem;
-		Camera* mCamera;
-		
-	protected:
+    private:
+        RenderSystem* mRenderSystem;
+        Camera* mCamera;
+        
+    protected:
 
-		//virtual void renderSingleObject(Renderable* rend);
-	public:
-		
-		virtual void renderScene(RenderSystem* rs, Camera* cam, Viewport& vp);
+        //virtual void renderSingleObject(Renderable* rend);
+    public:
+        
+        virtual void renderScene(RenderSystem* rs, Camera* cam, Viewport& vp);
 
-	};
+    };
 }
 #endif

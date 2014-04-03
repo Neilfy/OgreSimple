@@ -2,47 +2,47 @@
 
 namespace OgreSimple
 {
-	Camera::Camera(void)
-		: mPosition(0, 1, 0)
-		, mDirection(0, -1, 0)
-		, mUp(1, 0, 0)
-		, mNear(0.1f)
-		, mFar(100)
-		, mFovy(ME_PI * 0.5f)
-	    , mViewport(0, 0, 1, 1)
-		, mFrustum()
-		, mViewportResized(false)
-		, mMatProjDirty(true)
-		, mMatViewDirty(true)
-	{
-		mFrustum.Set(mNear, mFar, 1.f, 1.f);
-	};
+    Camera::Camera(void)
+        : mPosition(0, 1, 0)
+        , mAt(0, -1, 0)
+        , mUp(1, 0, 0)
+        , mNear(0.1f)
+        , mFar(100)
+        , mFovy(ME_PI * 0.5f)
+        , mViewport(0, 0, 1, 1)
+        , mFrustum()
+        , mViewportResized(false)
+        , mMatProjDirty(true)
+        , mMatViewDirty(true)
+    {
+        mFrustum.Set(mNear, mFar, 1.f, 1.f);
+    };
 
 
-	const Matrix4& Camera::GetProjectionMatrix(void)
-	{
-	    if (mMatProjDirty)
-	    {
-		float aspect = 1.0f;
-		if (mViewport.GetHeight() != 0)
-		{
-			aspect = static_cast<float>(mViewport.GetWidth()) / mViewport.GetHeight();
-		}
-		mMatPrj = Matrix4::PerspectiveRH(mFovy, aspect, mNear, mFar);
-	    }
+    const Matrix4& Camera::GetProjectionMatrix(void)
+    {
+        if (mMatProjDirty)
+        {
+        float aspect = 1.0f;
+        if (mViewport.GetHeight() != 0)
+        {
+            aspect = static_cast<float>(mViewport.GetWidth()) / mViewport.GetHeight();
+        }
+        mMatPrj = Matrix4::PerspectiveRH(mFovy, aspect, mNear, mFar);
+        }
 
-		return mMatPrj;
-	}
+        return mMatPrj;
+    }
 
-	const Matrix4& Camera::GetViewMatrix(void)
-	{
-	    if (mMatViewDirty)
-	    {
-		mMatView = Matrix4::LookAtRH(mPosition, mPosition + mDirection, mUp);
-	    }
+    const Matrix4& Camera::GetViewMatrix(void)
+    {
+        if (mMatViewDirty)
+        {
+        mMatView = Matrix4::LookAtRH(mPosition, mAt, mUp);
+        }
 
-		return mMatView;
-	}
+        return mMatView;
+    }
 
     void Camera::SetPosition(const Vector3& pos)
     {
@@ -57,11 +57,11 @@ namespace OgreSimple
         }
     }
 
-    void Camera::SetDirection(const Vector3& dir)
+    void Camera::SetLookAt(const Vector3& at)
     {
-        if (mDirection != dir)
+        if (mAt != at)
         {
-            mDirection = dir;
+            mAt = at;
             mMatViewDirty = true;
         }
     }
@@ -93,15 +93,15 @@ namespace OgreSimple
         }
     }
 
-	void Camera::SetViewport(const Viewport& vp)
-	{
-		mViewport = vp;
-		mViewportResized = true;
+    void Camera::SetViewport(const Viewport& vp)
+    {
+        mViewport = vp;
+        mViewportResized = true;
 
-		float h = mNear * tan(mFovy * 0.5f);
-		float w = h * vp.GetWidth() / vp.GetHeight();
-		mFrustum.Set(mNear, mFar, w, h);
+        float h = mNear * tan(mFovy * 0.5f);
+        float w = h * vp.GetWidth() / vp.GetHeight();
+        mFrustum.Set(mNear, mFar, w, h);
 
-		mMatProjDirty = true;
-	}
+        mMatProjDirty = true;
+    }
 }

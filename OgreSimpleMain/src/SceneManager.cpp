@@ -6,30 +6,33 @@
 
 namespace OgreSimple
 {
-	SceneManager::SceneManager()
-	{
+    SceneManager::SceneManager()
+    {
 
-	}
-	SceneManager::~SceneManager()
-	{
+    }
+    SceneManager::~SceneManager()
+    {
 
-	}
+    }
 
-	void SceneManager::renderScene(RenderSystem* rs, Camera* cam, Viewport& vp)
-	{
-		mCamera = cam;
-		mRenderSystem = rs;
-		rs->setViewport(vp);
-		rs->render();
+    void SceneManager::renderScene(RenderSystem* rs, Camera* cam, Viewport& vp)
+    {
+        mCamera = cam;
+        mRenderSystem = rs;
+        mCamera->SetViewport(vp);
+        rs->setViewport(vp);
+                rs->setProjectionMatrix(cam->GetProjectionMatrix());
+                rs->setViewMatrix(cam->GetViewMatrix());
+        rs->render();
 
-		// Clear the viewport if required
-		//if (mViewport->getClearEveryFrame())
-		{
-			//mDestRenderSystem->clearFrameBuffer(
-			//	mViewport->getClearBuffers(), 
-			//	mViewport->getBackgroundColour());
-		}
-		
-	}
+        // Clear the viewport if required
+        //if (mViewport->getClearEveryFrame())
+        {
+            //mDestRenderSystem->clearFrameBuffer(
+            //    mViewport->getClearBuffers(), 
+            //    mViewport->getBackgroundColour());
+        }
+        
+    }
 
 }
