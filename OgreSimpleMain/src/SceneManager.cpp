@@ -29,10 +29,20 @@ namespace OgreSimple
         //if (mViewport->getClearEveryFrame())
         {
             //mDestRenderSystem->clearFrameBuffer(
-            //    mViewport->getClearBuffers(), 
+            //    mViewport->getClearBuffers(),
             //    mViewport->getBackgroundColour());
         }
-        
+
+    }
+
+    void SceneManager::CreateObject()
+    {
+
+    }
+
+    void SceneManager::LoadObject()
+    {
+        //TODO
     }
 
 }
