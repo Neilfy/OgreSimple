@@ -6,14 +6,16 @@
 #include "Camera.h"
 
 OgreSimple::OgreSimpleRoot *gRoot = NULL;
-   
+
 /* 初始化材料属性、光源属性、光照模型，打开深度缓冲区 */
 void init ( void )
 {
     gRoot = new OgreSimple::OgreSimpleRoot();
-    OgreSimple::GLRenderSystem *rs = new OgreSimple::GLRenderSystem();
-    gRoot->setRenderSystem(rs);
+    //OgreSimple::GLRenderSystem *rs = new OgreSimple::GLRenderSystem();
+    //gRoot->setRenderSystem(rs);
+    gRoot->initialise();
     OgreSimple::SceneManager* scene = gRoot->createSceneManager();
+    scene->CreateObject();
     OgreSimple::Camera * cam = gRoot->createCamera();
     cam->SetPosition(OgreSimple::Vector3(0, 0, 3));
     cam->SetLookAt(OgreSimple::Vector3(0, 0, 0));
@@ -29,7 +31,7 @@ void display ( void )
 /* 定义GLUT的reshape函数，w、h分别是当前窗口的宽和高*/
 void reshape (int w, int h)
 {
-     gRoot->setSurfaceSize(w, h);     
+     gRoot->setSurfaceSize(w, h);
 }
 
 
@@ -37,7 +39,7 @@ void reshape (int w, int h)
 void keyboard ( unsigned char key, int x, int y)
 {
      /*按Esc键退出*/
-     switch (key) 
+     switch (key)
      {
          case 27:
          exit ( 0 );

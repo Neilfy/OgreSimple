@@ -58,18 +58,19 @@ namespace OgreSimple
         //delete mActiveRenderer;
         ms_Singleton = 0;
     }
-    
-    void OgreSimpleRoot::setSurfaceSize(int width, int height)
-    {
-        mViewport.SetSize(0, 0, width, height);
-    }
-    
-    void OgreSimpleRoot::setRenderSystem(RenderSystem* system)
+
+    void OgreSimpleRoot::initialise()
     {
         if(!mRenderer)
         {
-            mRenderer = system;
+            mRenderer = new OgreSimple::GLRenderSystem();
+            mRenderer->initialise();
         }
+    }
+
+    void OgreSimpleRoot::setSurfaceSize(int width, int height)
+    {
+        mViewport.SetSize(0, 0, width, height);
     }
 
     SceneManager* OgreSimpleRoot::createSceneManager()

@@ -3,6 +3,7 @@
 #include "RenderSystem.h"
 #include "Viewport.h"
 #include "Camera.h"
+#include "MovableObject.h"
 
 namespace OgreSimple
 {
@@ -12,6 +13,12 @@ namespace OgreSimple
     }
     SceneManager::~SceneManager()
     {
+        std::vector<MovableObject*>::iterator iter;
+        for(iter = mQueue.begin(); iter != mQueue.end(); ++iter)
+        {
+            MovableObject *obj = *iter;
+            delete obj;
+        }
 
     }
 
@@ -23,7 +30,13 @@ namespace OgreSimple
         rs->setViewport(vp);
                 rs->setProjectionMatrix(cam->GetProjectionMatrix());
                 rs->setViewMatrix(cam->GetViewMatrix());
-        rs->render();
+
+        std::vector<MovableObject*>::iterator iter;
+        for(iter = mQueue.begin(); iter != mQueue.end(); ++iter)
+        {
+            MovableObject *obj = *iter;
+            obj->render(mRenderSystem);
+        }
 
         // Clear the viewport if required
         //if (mViewport->getClearEveryFrame())
@@ -37,7 +50,10 @@ namespace OgreSimple
 
     void SceneManager::CreateObject()
     {
+        MovableObject *obj = new MovableObject();
+        obj->Make();
 
+        mQueue.push_back(obj);
     }
 
     void SceneManager::LoadObject()

@@ -8,15 +8,16 @@
 namespace OgreSimple
 {
     class Viewport;
+    class RenderOperation;
     class RenderSystem
     {
     public:
         RenderSystem();
         virtual ~RenderSystem();
-    
+
     public:
         virtual void initialise();
-        virtual void render();
+        virtual void render(RenderOperation* ro);
 
         virtual void setViewport(const Viewport& vp) = 0;
         virtual void setWorldMatrix(const Matrix4& mat) = 0;

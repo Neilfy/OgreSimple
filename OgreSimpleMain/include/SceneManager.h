@@ -3,12 +3,13 @@
 
 //#include "Camera.h"
 #include <string>
-#include "MovableObject.h"
+#include <vector>
 namespace OgreSimple
 {
     class RenderSystem;
     class Viewport;
     class Camera;
+    class MovableObject;
     class SceneManager
     {
     public:
@@ -16,8 +17,10 @@ namespace OgreSimple
         ~SceneManager();
 
     private:
-        RenderSystem* mRenderSystem;
-        Camera* mCamera;
+        RenderSystem *mRenderSystem;
+        Camera *mCamera;
+
+         std::vector<MovableObject*> mQueue;
 
     protected:
 

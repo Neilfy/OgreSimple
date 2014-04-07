@@ -11,6 +11,9 @@ set (SOURCE_FILES
   src/SceneManager.cpp
   src/Viewport.cpp
   src/RenderSystem.cpp
+  src/MovableObject.cpp
+  src/VertexIndexData.cpp
+  src/Renderable.cpp
 )
 
 include_directories(

@@ -11,7 +11,7 @@ namespace OgreSimple
     class RenderSystem;
     class Viewport;
     class Camera;
-    
+
     class OgreSimpleRoot
     {
     private:
@@ -30,7 +30,7 @@ namespace OgreSimple
         //MovableObjectFactory* mLightFactory;
         //std::set<FrameListener*> mFrameListeners;
     public:
-        
+
         OgreSimpleRoot(void);
         ~OgreSimpleRoot(void);
         static OgreSimpleRoot& getSingleton(){ return *ms_Singleton; };
@@ -39,7 +39,8 @@ namespace OgreSimple
         //string& getResourcePath(){ return m_BasePath; };
         //void setResourcePath(string& path){ m_BasePath = path; };
 
-        void setRenderSystem(RenderSystem* system);
+        //void setRenderSystem(RenderSystem* system);
+        void initialise();
         void setSurfaceSize(int width, int height);
         SceneManager* createSceneManager();
 
@@ -49,12 +50,12 @@ namespace OgreSimple
         void renderScene();
 
         //MovableObjectFactory* getMovableObjectFactory(const string& typeName);
-        //void addMovableObjectFactory(MovableObjectFactory* fact, 
+        //void addMovableObjectFactory(MovableObjectFactory* fact,
         //    bool overrideExisting = false);
 
     private:
         bool _updateAllRenderTargets(void);
-        
+
     };
 }
 

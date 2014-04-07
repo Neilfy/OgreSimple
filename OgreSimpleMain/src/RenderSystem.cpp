@@ -8,7 +8,7 @@ namespace OgreSimple
 
     RenderSystem::~RenderSystem()
     {
-        
+
     }
 
     void RenderSystem::initialise()
@@ -16,9 +16,9 @@ namespace OgreSimple
 
     }
 
-    void RenderSystem::render()
+    void RenderSystem::render(RenderOperation* ro)
     {
-        
+
     }
 
 }
