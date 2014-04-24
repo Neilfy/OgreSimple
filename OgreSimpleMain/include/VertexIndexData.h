@@ -6,6 +6,7 @@
 namespace OgreSimple
 {
     class VertexVBO;
+    class IndexVBO;
     class VertexData
     {
     public:
@@ -15,9 +16,14 @@ namespace OgreSimple
         void writeBuffer(uint8* buf, int size);
         uint8* getBuffer() const;
 
+        void BindVBO() const;
+        void UnbindVBO() const;
+
         int calVertexTypeSize(int vertexType) const;
         int getVertexType() const;
         int getVerticesCount() const;
+        int getBufferSize() const;
+        bool isUseVBO() const;
     private:
         uint8* mBuffer;
         int mSizeInByte;
@@ -29,21 +35,26 @@ namespace OgreSimple
     class IndexData
     {
     public:
-        enum IndexType
-        {
-            IT_16BIT,
-            IT_32BIT
-        };
-        IndexData(IndexType type, int numIndexes);
+
+        IndexData(IndexType type, int numIndexes, bool bUseVBO);
         ~IndexData();
 
         void writeBuffer(uint8* buf, int size);
         uint8* getBuffer() const;
+
+        void BindVBO() const;
+        void UnbindVBO() const;
+
+        IndexType getIndexType() const;
+        int getIndexesCount() const;
+        int getBufferSize() const;
+        bool isUseVBO() const;
     private:
         uint8* mBuffer;
         int mSizeInByte;
         int mNumIndexes;
-        int mIndexType;
+        IndexType mIndexType;
+        IndexVBO* mVBO;
     };
 }
 #endif

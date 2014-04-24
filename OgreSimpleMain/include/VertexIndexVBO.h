@@ -1,6 +1,7 @@
 #ifndef VERTEXINDEXVBO_H
 #define VERTEXINDEXVBO_H
 
+#include "VertexIndexData.h"
 namespace OgreSimple
 {
     class VertexVBO
@@ -9,12 +10,12 @@ namespace OgreSimple
         VertexVBO(){};
         virtual ~VertexVBO(){};
 
-        virtual bool SetVertexData(const VertexData* vertexData) = 0;
+        virtual bool SetBufferData(const VertexData* vertexData) = 0;
         virtual bool BindVertexBuffer() = 0;
 		virtual bool UnBindVertexBuffer() = 0;
 
     protected:
-        void releaseVBO() = 0;
+        virtual void releaseVBO() = 0;
     };
 
     class IndexVBO
@@ -23,12 +24,12 @@ namespace OgreSimple
         IndexVBO(){};
         virtual ~IndexVBO(){};
 
-        virtual bool SetIndexData(const IndexData* indexData) = 0;
+        virtual bool SetBufferData(const IndexData* indexData) = 0;
         virtual bool BindIndexBuffer() = 0;
 		virtual bool UnBindIndexBuffer() = 0;
 
     protected:
-        void releaseVBO() = 0;
+        virtual void releaseVBO() = 0;
     };
 }
 #endif // VERTEXINDEXVBO_H

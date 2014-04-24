@@ -14,7 +14,8 @@ namespace OgreSimple
         void createVertexData(int vertexType, int numVertices, bool bUseVBO);
         void addVertices(uint8* buf, int size);
 
-        void addIndexes(uint8* buf, int indexType, int numIndexes);
+        void createIndexData(IndexType type, int numIndexes, bool bUseVBO);
+        void addIndexes(uint8* buf, int size);
 
         VertexData* getVertexData() const
         {

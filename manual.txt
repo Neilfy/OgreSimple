@@ -1,5 +1,6 @@
 1.install mingw
 2.set path of MinGW "@set path=D:/MinGW/bin;%PATH%;"
+  install glew to mingw http://iweb.dl.sourceforge.net/project/glew/glew/1.10.0/glew-1.10.0-win32.zip
 3.build
 	mkdir build
 	cd build

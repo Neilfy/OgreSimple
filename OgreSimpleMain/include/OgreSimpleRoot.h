@@ -39,7 +39,7 @@ namespace OgreSimple
         //string& getResourcePath(){ return m_BasePath; };
         //void setResourcePath(string& path){ m_BasePath = path; };
 
-        //void setRenderSystem(RenderSystem* system);
+        void setRenderSystem(RenderSystem* system);
         void initialise();
         void setSurfaceSize(int width, int height);
         SceneManager* createSceneManager();

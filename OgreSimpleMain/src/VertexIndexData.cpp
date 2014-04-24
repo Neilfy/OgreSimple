@@ -1,5 +1,6 @@
 #include "VertexIndexData.h"
 #include "VertexIndexVBO.h"
+#include "HardwareManager.h"
 #include <assert.h>
 #include <string.h>
 
@@ -10,7 +11,7 @@ namespace OgreSimple
     {
         if(bUseVBO)
         {
-            mVBO = new VertexVBO();
+            mVBO = HardwareManager::getSingleton()->creatVertexVBO();
         }
         mType = vertexType;
         int size = calVertexTypeSize(vertexType);
@@ -61,11 +62,32 @@ namespace OgreSimple
     {
         assert(mSizeInByte >= size);
         memcpy(mBuffer, buf, size);
+
+        if(mVBO)
+        {
+            mVBO->SetBufferData(this);
+        }
     }
 
     uint8* VertexData::getBuffer() const
     {
         return mBuffer;
+    }
+
+    void VertexData::BindVBO() const
+    {
+        if(mVBO)
+        {
+            mVBO->BindVertexBuffer();
+        }
+    }
+
+    void VertexData::UnbindVBO() const
+    {
+        if(mVBO)
+        {
+            mVBO->UnBindVertexBuffer();
+        }
     }
 
     int VertexData::getVertexType() const
@@ -78,10 +100,25 @@ namespace OgreSimple
         return mNumVertices;
     }
 
+    int VertexData::getBufferSize() const
+    {
+        return mSizeInByte;
+    }
+
+    bool VertexData::isUseVBO() const
+    {
+        return mVBO != NULL;
+    }
+
     //================================================
 
-    IndexData::IndexData(IndexType type, int numIndexes)
+    IndexData::IndexData(IndexType type, int numIndexes, bool bUseVBO)
+        :mVBO(NULL)
     {
+        if(bUseVBO)
+        {
+            mVBO = HardwareManager::getSingleton()->creatIndexVBO();
+        }
         mIndexType = type;
         mNumIndexes = numIndexes;
 
@@ -102,16 +139,61 @@ namespace OgreSimple
         {
             delete[] mBuffer;
         }
+        if(mVBO)
+        {
+            delete mVBO;
+        }
     }
 
     void IndexData::writeBuffer(uint8 *buf,int size)
     {
         assert(mSizeInByte >= size);
         memcpy(mBuffer, buf, size);
+
+        if(mVBO)
+        {
+            mVBO->SetBufferData(this);
+        }
     }
 
     uint8* IndexData::getBuffer() const
     {
         return mBuffer;
+    }
+
+    void IndexData::BindVBO() const
+    {
+        if(mVBO)
+        {
+            mVBO->BindIndexBuffer();
+        }
+    }
+
+    void IndexData::UnbindVBO() const
+    {
+       if(mVBO)
+        {
+            mVBO->UnBindIndexBuffer();
+        }
+    }
+
+    IndexType IndexData::getIndexType() const
+    {
+        return mIndexType;
+    }
+
+    int IndexData::getIndexesCount() const
+    {
+        return mNumIndexes;
+    }
+
+    int IndexData::getBufferSize() const
+    {
+        int mSizeInByte;
+    }
+
+    bool IndexData::isUseVBO() const
+    {
+        return mVBO != NULL;
     }
 }

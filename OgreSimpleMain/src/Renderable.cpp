@@ -38,9 +38,21 @@ namespace OgreSimple
         }
     }
 
-
-    void Renderable::addIndexes(uint8* buf, int indexType, int numIndexes)
+    void Renderable::createIndexData(IndexType type, int numIndexes, bool bUseVBO)
     {
-        //TODO
+        if(mIndexData)
+        {
+            delete mIndexData;
+            mIndexData = NULL;
+        }
+        mIndexData = new IndexData(type, numIndexes, bUseVBO);
+    }
+
+    void Renderable::addIndexes(uint8* buf, int size)
+    {
+        if(mIndexData)
+        {
+            mIndexData->writeBuffer(buf, size);
+        }
     }
 }

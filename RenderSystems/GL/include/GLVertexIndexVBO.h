@@ -1,6 +1,7 @@
 #ifndef GLVERTEXINDEXVBO_H
 #define GLVERTEXINDEXVBO_H
 
+#include "glew.h"
 #include "VertexIndexVBO.h"
 namespace OgreSimple
 {
@@ -12,12 +13,15 @@ namespace OgreSimple
         GLVertexVBO();
         virtual ~GLVertexVBO();
 
-        virtual bool SetVertexData(const VertexData* vertexData);
+        virtual bool SetBufferData(const VertexData* vertexData);
         virtual bool BindVertexBuffer();
 		virtual bool UnBindVertexBuffer();
 
     protected:
         void releaseVBO();
+
+    private:
+        GLuint mBufferID;
     };
 
     class GLIndexVBO : public IndexVBO
@@ -26,12 +30,15 @@ namespace OgreSimple
         GLIndexVBO();
         virtual ~GLIndexVBO();
 
-        virtual bool SetIndexData(const IndexData* indexData);
+        virtual bool SetBufferData(const IndexData* indexData);
         virtual bool BindIndexBuffer();
 		virtual bool UnBindIndexBuffer();
 
     protected:
         void releaseVBO();
+
+    private:
+        GLuint mBufferID;
     };
 }
 #endif // VERTEXINDEXVBO_H

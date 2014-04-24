@@ -1,12 +1,12 @@
 #include "GLHardwareManager.h"
 namespace OgreSimple
 {
-    VertexVBO* GLHardwareManager::creatVertexVBO()
+    GLVertexVBO* GLHardwareManager::creatVertexVBO()
     {
         return new GLVertexVBO();
     }
 
-    IndexVBO* GLHardwareManager::creatIndexVBO()
+    GLIndexVBO* GLHardwareManager::creatIndexVBO()
     {
         return new GLIndexVBO();
     }

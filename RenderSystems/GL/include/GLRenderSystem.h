@@ -4,12 +4,13 @@
 #include "RenderSystem.h"
 namespace OgreSimple
 {
+    class HardwareManager;
     class GLRenderSystem :
         public RenderSystem
     {
     private:
         bool mGLInitialized;
-
+        HardwareManager *mHardwareManager;
         Viewport* mViewport;
 
     private:

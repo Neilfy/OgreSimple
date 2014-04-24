@@ -2,11 +2,15 @@ PROJECT(GLRenderSystem)
 set(LIBRARY_OUTPUT_PATH ../../../lib)
 
 set (SOURCE_FILES
+  src/glew.cpp
   src/GLRenderSystem.cpp
+  src/GLvertexIndexVBO.cpp
+  src/GLHardwareManager.cpp
 )
 
 include_directories(
-  include
+  include/
+  include/GL
   ${CMAKE_SOURCE_DIR}/OgreSimpleMain/include
 )
 

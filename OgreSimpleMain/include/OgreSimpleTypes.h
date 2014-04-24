@@ -5,13 +5,13 @@ namespace OgreSimple
 {
 #ifndef NULL
 #define NULL 0
+#endif
 
 #define FVF_POSITION 0x00000001
 #define FVF_NORMAL 0x00000002
 #define FVF_DIFFUSE 0x00000004
 #define FVF_UV 0x00000008
 
-#endif
     typedef unsigned long long uint64;
     typedef unsigned int uint32;
     typedef unsigned short uint16;
@@ -21,6 +21,12 @@ namespace OgreSimple
     typedef char int8;
 
     static const float ME_PI = 3.141592654f;
+
+    enum IndexType
+    {
+        IT_16BIT,
+        IT_32BIT
+    };
 }
 
 #endif

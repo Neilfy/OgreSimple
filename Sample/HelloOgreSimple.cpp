@@ -11,8 +11,8 @@ OgreSimple::OgreSimpleRoot *gRoot = NULL;
 void init ( void )
 {
     gRoot = new OgreSimple::OgreSimpleRoot();
-    //OgreSimple::GLRenderSystem *rs = new OgreSimple::GLRenderSystem();
-    //gRoot->setRenderSystem(rs);
+    OgreSimple::GLRenderSystem *rs = new OgreSimple::GLRenderSystem();
+    gRoot->setRenderSystem(rs);
     gRoot->initialise();
     OgreSimple::SceneManager* scene = gRoot->createSceneManager();
     scene->CreateObject();

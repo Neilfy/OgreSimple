@@ -9,7 +9,7 @@ namespace OgreSimple
     {
     public:
         GLHardwareManager(){};
-        virtual ~GLHardwareManager
+        virtual ~GLHardwareManager(){};
 
         GLVertexVBO* creatVertexVBO();
 

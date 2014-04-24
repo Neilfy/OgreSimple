@@ -13,6 +13,7 @@ set (SOURCE_FILES
   src/RenderSystem.cpp
   src/MovableObject.cpp
   src/VertexIndexData.cpp
+  src/HardwareManager.cpp
   src/Renderable.cpp
 )
 

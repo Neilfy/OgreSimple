@@ -42,8 +42,15 @@ namespace OgreSimple
             1.0f, -1.0f, 0.0f
         };
 
-        section->createVertexData(FVF_POSITION, 3);
+        int index[]={
+            1,2,3
+        };
+
+        section->createVertexData(FVF_POSITION, 3, true);
         section->addVertices((uint8*)buf, sizeof(buf));
+
+        section->createIndexData(IT_32BIT, 3, true);
+        section->addIndexes((uint8*)index, sizeof(index));
 
         mSections.push_back(section);
     }

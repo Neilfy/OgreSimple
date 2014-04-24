@@ -61,9 +61,14 @@ namespace OgreSimple
 
     void OgreSimpleRoot::initialise()
     {
+
+    }
+
+    void OgreSimpleRoot::setRenderSystem(RenderSystem* system)
+    {
         if(!mRenderer)
         {
-            mRenderer = new OgreSimple::GLRenderSystem();
+            mRenderer = system;
             mRenderer->initialise();
         }
     }
