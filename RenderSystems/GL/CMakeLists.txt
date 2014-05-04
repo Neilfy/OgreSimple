@@ -6,6 +6,8 @@ set (SOURCE_FILES
   src/GLRenderSystem.cpp
   src/GLvertexIndexVBO.cpp
   src/GLHardwareManager.cpp
+  src/GLTexture.cpp
+  src/GLTextureManager.cpp
 )
 
 include_directories(

@@ -4,7 +4,9 @@
 #include "Viewport.h"
 #include "RenderOperation.h"
 #include "GLHardwareManager.h"
-
+#include "GLTextureManager.h"
+#include "Material.h"
+#include "GLTexture.h"
 namespace OgreSimple
 {
     GLRenderSystem::GLRenderSystem(void)
@@ -12,6 +14,7 @@ namespace OgreSimple
         mGLInitialized = false;
         mViewport = NULL;
         mHardwareManager = NULL;
+        mTextureManager = NULL;
     }
 
     GLRenderSystem::~GLRenderSystem(void)
@@ -28,6 +31,7 @@ namespace OgreSimple
             return;
 
         mHardwareManager = new GLHardwareManager();
+        mTextureManager = new GLTextureManager();
     }
 
     void GLRenderSystem::setViewport(const Viewport& vp)
@@ -59,12 +63,6 @@ namespace OgreSimple
 
     void GLRenderSystem::render(RenderOperation* ro)
     {
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClearDepth(1.0f);
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         RenderSystem::render(ro);
 
         const VertexData *vertexData = ro->mVertexData;
@@ -161,8 +159,6 @@ namespace OgreSimple
 			glDrawArrays(primType, 0, vertexData->getVerticesCount());
 		}
 
-
-
 		if(isUseVBO)
         {
             vertexData->UnbindVBO();
@@ -187,5 +183,90 @@ namespace OgreSimple
 
         glFlush();
     }
+
+    void GLRenderSystem::setTextureUnit(TextureUnit* texUnit)
+    {
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearDepth(1.0f);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		GLTexture* tex = (GLTexture*)texUnit->GetTexture();
+		if (tex)
+		{
+			glBindTexture(GL_TEXTURE_2D, tex->getGLID());
+		}
+
+    }
+
+    void GLRenderSystem::setMaterial(Material* mat)
+    {
+        Technique* tech = mat->getBestTechnique();
+        // set lighting material
+		if (tech->IsLightingEnabled())
+		{
+			// enable light
+			enableLighting(true);
+
+			// set Material
+			Vector4 vec = tech->GetAmbient().ToVector4();
+			glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, &vec.x);
+			vec = tech->GetDiffuse().ToVector4();
+			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, &vec.x);
+			vec = tech->GetSpecular().ToVector4();
+			glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, &vec.x);
+			vec = tech->GetEmission().ToVector4();
+			glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, &vec.x);
+
+			glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, tech->GetShinness());
+		}
+		else
+		{
+			// disable light
+			enableLighting(false);
+
+			if (tech->IsColorEnabled())
+			{
+			    const Color& color = tech->GetObjectColor();
+			    glColor4f(color.GetRf(), color.GetGf(), color.GetBf(), color.GetAf());
+			}
+		}
+
+		// set texture
+		TextureUnit* texUint = tech->GetTextureUnit();
+		if (texUint)
+		{
+		    setTextureUnit(texUint);
+			enableTexture(true);
+		}
+		else
+		{
+			enableTexture(false);
+		}
+    }
+
+    void GLRenderSystem::enableLighting(bool enable)
+	{
+		if (enable)
+		{
+			glEnable(GL_LIGHTING);
+		}
+		else
+		{
+			glDisable(GL_LIGHTING);
+		}
+	}
+
+	void GLRenderSystem::enableTexture(bool enable)
+	{
+		if (enable)
+		{
+			glEnable(GL_TEXTURE_2D);
+		}
+		else
+		{
+			glDisable(GL_TEXTURE_2D);
+		}
+	}
 }
 

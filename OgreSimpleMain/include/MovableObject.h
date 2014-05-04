@@ -7,6 +7,7 @@
 namespace OgreSimple
 {
     class RenderSystem;
+    class Material;
     class MovableObject
     {
     public:
@@ -17,6 +18,11 @@ namespace OgreSimple
             virtual ~ObjectSection();
 
             void render(RenderSystem* renderer);
+
+            void setMaterial(Material* mat);
+
+        private:
+            Material* mMat;
         };
 
     public:

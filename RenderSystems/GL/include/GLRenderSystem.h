@@ -5,12 +5,16 @@
 namespace OgreSimple
 {
     class HardwareManager;
+    class TextureManager;
+    class Material;
+    class TextureUnit;
     class GLRenderSystem :
         public RenderSystem
     {
     private:
         bool mGLInitialized;
         HardwareManager *mHardwareManager;
+        TextureManager *mTextureManager;
         Viewport* mViewport;
 
     private:
@@ -29,9 +33,15 @@ namespace OgreSimple
         //    float depth = 1.0f, unsigned short stencil = 0);
         void setViewport(const Viewport& vp);
 
-                void setWorldMatrix(const Matrix4& mat);
-                void setViewMatrix(const Matrix4& mat);
-                void setProjectionMatrix(const Matrix4& mat);
+        void setWorldMatrix(const Matrix4& mat);
+        void setViewMatrix(const Matrix4& mat);
+        void setProjectionMatrix(const Matrix4& mat);
+
+        void setMaterial(Material* mat);
+        void setTextureUnit(TextureUnit* texUnit);
+
+        void enableLighting(bool enable);
+        void enableTexture(bool enable);
     };
 }
 

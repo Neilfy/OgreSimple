@@ -11,7 +11,7 @@
 //#include "RenderWindow.h"
 //#include "MovableObject.h"
 //#include "MeshManager.h"
-//#include "MaterialManager.h"
+#include "MaterialManager.h"
 //#include "Entity.h"
 //#include "Light.h"
 namespace OgreSimple
@@ -20,11 +20,13 @@ namespace OgreSimple
 
     OgreSimpleRoot::OgreSimpleRoot(void)
                         :mViewport(0, 0, 0, 0)
+                        ,mSceneManager(NULL)
+                        ,mCamera(NULL)
+                        ,mRenderer(NULL)
     {
         ms_Singleton = this;
-        mSceneManager = NULL;
-        mCamera = NULL;
-        mRenderer = NULL;
+        mMatManager = new MaterialManager();
+
         //mMeshManager = new MeshManager();
         //mMatManager = new MaterialManager;
 
@@ -39,6 +41,11 @@ namespace OgreSimple
         if(mSceneManager)
         {
             delete mSceneManager;
+        }
+
+        if(mMatManager)
+        {
+            delete mMatManager;
         }
 
         if(mCamera)

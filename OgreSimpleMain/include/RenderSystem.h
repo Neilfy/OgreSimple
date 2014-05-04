@@ -4,11 +4,11 @@
 #include "NMath.h"
 #include "Color.h"
 #include "Viewport.h"
-#include<string>
 namespace OgreSimple
 {
     class Viewport;
     class RenderOperation;
+    class Material;
     class RenderSystem
     {
     public:
@@ -23,6 +23,8 @@ namespace OgreSimple
         virtual void setWorldMatrix(const Matrix4& mat) = 0;
         virtual void setViewMatrix(const Matrix4& mat) = 0;
         virtual void setProjectionMatrix(const Matrix4& mat) = 0;
+
+        virtual void setMaterial(Material* mat) = 0;
     };
 }
 #endif

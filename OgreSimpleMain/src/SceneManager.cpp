@@ -4,12 +4,15 @@
 #include "Viewport.h"
 #include "Camera.h"
 #include "MovableObject.h"
+#include "ResourcesLoaderThread.h"
 
 namespace OgreSimple
 {
     SceneManager::SceneManager()
+        :mThread(NULL)
     {
-
+        mThread = new ResourcesLoaderThread(this);
+        mThread->Start();
     }
     SceneManager::~SceneManager()
     {
@@ -19,6 +22,9 @@ namespace OgreSimple
             MovableObject *obj = *iter;
             delete obj;
         }
+
+        mThread->Stop();
+        delete mThread;
 
     }
 
@@ -48,17 +54,24 @@ namespace OgreSimple
 
     }
 
-    void SceneManager::CreateObject()
+    MovableObject* SceneManager::CreateObject()
     {
         MovableObject *obj = new MovableObject();
         obj->Make();
+        return obj;
+    }
 
+    void SceneManager::AttachObject(MovableObject* obj)
+    {
         mQueue.push_back(obj);
     }
 
-    void SceneManager::LoadObject()
+    void SceneManager::LoadSceneFile()
     {
         //TODO
+        //temp source code for testing Resource loader thread.
+        mThread->addTask("tmp");
+
     }
 
 }

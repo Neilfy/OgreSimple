@@ -1,7 +1,7 @@
 #ifndef SCENEMANAGER_H
 #define SCENEMANAGER_H
 
-//#include "Camera.h"
+#include "platform_thread.h"
 #include <string>
 #include <vector>
 namespace OgreSimple
@@ -10,6 +10,7 @@ namespace OgreSimple
     class Viewport;
     class Camera;
     class MovableObject;
+    class ResourcesLoaderThread;
     class SceneManager
     {
     public:
@@ -28,9 +29,11 @@ namespace OgreSimple
     public:
 
         virtual void renderScene(RenderSystem* rs, Camera* cam, Viewport& vp);
-        void CreateObject(/*Type*/);
-        void LoadObject(/*file name*/);
-
+        MovableObject* CreateObject(/*Type*/);
+        void AttachObject(MovableObject* obj);
+        void LoadSceneFile(/*file name*/);
+    private:
+        ResourcesLoaderThread* mThread;
     };
 }
 #endif

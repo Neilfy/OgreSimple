@@ -189,7 +189,7 @@ namespace OgreSimple
 
     int IndexData::getBufferSize() const
     {
-        int mSizeInByte;
+        return mSizeInByte;
     }
 
     bool IndexData::isUseVBO() const

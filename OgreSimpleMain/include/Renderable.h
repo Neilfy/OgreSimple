@@ -22,6 +22,11 @@ namespace OgreSimple
             return mVertexData;
         } ;
 
+        IndexData* getIndexData() const
+        {
+            return mIndexData;
+        } ;
+
     private:
         VertexData *mVertexData;
         IndexData *mIndexData;

@@ -9,6 +9,7 @@ set (SOURCE_FILES
 
 include_directories(
   ${CMAKE_SOURCE_DIR}/OgreSimpleMain/include
+  ${CMAKE_SOURCE_DIR}/OgreSimpleMain/include/thread/
   ${CMAKE_SOURCE_DIR}/RenderSystems/GL/include
 )
 

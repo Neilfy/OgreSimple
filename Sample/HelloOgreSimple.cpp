@@ -15,7 +15,7 @@ void init ( void )
     gRoot->setRenderSystem(rs);
     gRoot->initialise();
     OgreSimple::SceneManager* scene = gRoot->createSceneManager();
-    scene->CreateObject();
+    scene->LoadSceneFile();
     OgreSimple::Camera * cam = gRoot->createCamera();
     cam->SetPosition(OgreSimple::Vector3(0, 0, 3));
     cam->SetLookAt(OgreSimple::Vector3(0, 0, 0));

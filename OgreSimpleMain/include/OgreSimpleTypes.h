@@ -27,6 +27,33 @@ namespace OgreSimple
         IT_16BIT,
         IT_32BIT
     };
+
+    enum BlendFactorType
+	{
+		BFT_ZERO,
+		BFT_ONE,
+		BFT_SRC_COLOR,
+		BFT_ONE_MINUS_SRC_COLOR,
+		BFT_DST_COLOR,
+		BFT_ONE_MINUS_DST_COLOR,
+		BFT_SRC_ALPHA,
+		BFT_ONE_MINUS_SRC_ALPHA,
+		BFT_DST_ALPHA,
+		BFT_ONE_MINUS_DST_ALPHA,
+		BFT_SRC_ALPHA_SATURATE,
+	};
+
+	enum PixelType
+	{
+		PT_RGBA,
+		PT_RGBA_4444,
+		PT_RGB,
+		PT_ETC1,
+		PT_PVRTC4_RGB,
+		PT_PVRTC4_RGBA,
+		PT_RGB565,
+		PT_ALPHA
+	};
 }
 
 #endif
