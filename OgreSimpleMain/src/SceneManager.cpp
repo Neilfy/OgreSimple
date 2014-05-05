@@ -5,7 +5,7 @@
 #include "Camera.h"
 #include "MovableObject.h"
 #include "ResourcesLoaderThread.h"
-
+#include "VirtualObject.h"
 namespace OgreSimple
 {
     SceneManager::SceneManager()
@@ -56,7 +56,9 @@ namespace OgreSimple
 
     MovableObject* SceneManager::CreateObject()
     {
-        MovableObject *obj = new MovableObject();
+        //MovableObject *obj = new MovableObject();
+        //obj->Make();
+        VirtualObject *obj = new VirtualObject("tmp");
         obj->Make();
         return obj;
     }

@@ -1,8 +1,4 @@
 #include "OBJLoader.h"
-#include "Root.h"
-#include "MeshManager.h"
-#include "HardwareBufferManager.h"
-#include "MaterialManager.h"
 namespace OgreSimple
 {
 	CLoadOBJ::CLoadOBJ()//
@@ -11,28 +7,34 @@ namespace OgreSimple
 	}
 	CLoadOBJ::~CLoadOBJ()
 	{
+	    GLMgroup* obj = mModel.groups;
+		while (obj)
+        {
+            GLMgroup* last = obj;
+            obj = obj->next;
+            delete last;
+        }
 
 	}
 
-	bool CLoadOBJ::loadFromBuffer(string path)
+	GLMmodel* CLoadOBJ::load(string path)
 	{
 	    path = "E:\\WorkSpace\\OgreSimple\\Sample\\Resources\\Models\\tmp.obj";
 		ifstream file(path.c_str(),ios::in);
 		if (!file)
 		{
-			assert(false && "文件不存在");
+			return NULL;
 		}
 
-		GLMmodel model;
 		GLMgroup* group = new GLMgroup();
 		group->name = "default";
 		group->next = 0;
 
-		model.groups = group;
+		mModel.groups = group;
 
-		vector<Vector3> &vertexs = model.vertexs;
-		vector<Vector3> &normals = model.normals;
-		vector<Vector3> &texcoords = model.texcoords;
+		vector<Vector3> &vertexs = mModel.vertexs;
+		vector<Vector3> &normals = mModel.normals;
+		vector<Vector3> &texcoords = mModel.texcoords;
 		int v,n,t;
 		Vector3 tmp;
 		GLMtriangle tri;
@@ -41,7 +43,7 @@ namespace OgreSimple
 		char tmpName[128] = {0};
 		while (!file.eof())
 		{
-			iss.getline(buf,128);
+			file.getline(buf,128);
 			char type[10]={0};
 			sscanf(buf,"%[^ ]",type);
 			sscanf( type, "%*[^a-z|A-Z|#]%s", type );
@@ -73,8 +75,8 @@ namespace OgreSimple
 				break;
 			case 'm':
 				sscanf(buf, "%*[^ ]%s", tmpName);
-				model.mtllibname = tmpName;
-				ReadMTL(model, tmpName);
+				mModel.mtllibname = tmpName;
+				ReadMTL(mModel, tmpName);
 				break;
 			case 'u':
 				sscanf(buf,"%*[^ ]%s",tmpName);
@@ -150,148 +152,19 @@ namespace OgreSimple
 			}
 		}
 
-		//
-
-		//处理材质
-		for(int i=0;i<model.materials.size();i++)
-		{
-			GLMmaterial& materials = model.materials[i];
-			string name = materials.name;
-			name = mesh->getName() + name;
-			Material* pMat = MaterialManager::getSingleton().create(name);
-			if (materials.texName != "")
-			{
-				pMat->createTextureUnitState( materials.texName );
-			}
-
-
-			pMat->setAmbient(materials.ambient[0], materials.ambient[1], materials.ambient[2]);
-			pMat->setDiffuse(materials.diffuse[0], materials.diffuse[1], materials.diffuse[2],materials.diffuse[3]);
-			pMat->setSpecular(materials.specular[0], materials.specular[1], materials.specular[2],materials.specular[3]);
-			pMat->setShininess(materials.shininess);
-			pMat->setLightingEnabled(true);
-		}
-		Vector3 minPt,maxPt;//box
-		bool bFirst = true;
-
-		GLMgroup* obj = model.groups;
-		while (obj)
-		{
-			if (obj->triangles.size()==0)
-			{
-				GLMgroup* last = obj;
-				obj = obj->next;
-				delete last;
-				continue;
-			}
-			vector<float> vecVertex;
-			vector<GLMtriangle>::iterator tri_it = obj->triangles.begin();
-			vector<GLMtriangle>::iterator tri_end = obj->triangles.end();
-			for (; tri_it != tri_end; ++tri_it)
-			{
-				for (int i=0; i<3; i++)
-				{
-					if (tri_it->vIdx.size())
-					{
-						tmp = model.vertexs[tri_it->vIdx[i]-1];
-						vecVertex.push_back(tmp.x);
-						vecVertex.push_back(tmp.y);
-						vecVertex.push_back(tmp.z);
-
-						//box
-						if (bFirst)
-						{
-							minPt = tmp;
-							maxPt = tmp;
-							bFirst = false;
-						}else
-						{
-							minPt.x = tmp.x < minPt.x ? tmp.x : minPt.x ;
-							maxPt.x = tmp.x > maxPt.x ? tmp.x : maxPt.x ;
-							minPt.y = tmp.y < minPt.y ? tmp.y : minPt.y ;
-							maxPt.y = tmp.y > maxPt.y ? tmp.y : maxPt.y ;
-							minPt.z = tmp.z < minPt.z ? tmp.z : minPt.z ;
-							maxPt.z = tmp.z > maxPt.z ? tmp.z : maxPt.z ;
-						}
-					}
-					if (tri_it->nIdx.size())
-					{
-						tmp = model.normals[tri_it->nIdx[i]-1];
-						vecVertex.push_back(tmp.x);
-						vecVertex.push_back(tmp.y);
-						vecVertex.push_back(tmp.z);
-					}
-					if (tri_it->tIdx.size())
-					{
-						tmp = model.texcoords[tri_it->tIdx[i]-1];
-						vecVertex.push_back(tmp.x);
-						vecVertex.push_back(tmp.y);
-					}
-				}
-			}
-
-			tri_it = obj->triangles.begin();
-			VertexDeclaration* patchDecl;
-			patchDecl = HardwareBufferManager::getSingleton().createVertexDeclaration();
-			patchDecl->addElement(0, 0, VET_FLOAT3, VES_POSITION);
-			if (tri_it->nIdx.size())
-			{
-				patchDecl->addElement(0, sizeof(float)*3, VET_FLOAT3, VES_NORMAL, 0);
-			}
-			if (tri_it->tIdx.size())
-			{
-				patchDecl->addElement(0, sizeof(float)*6, VET_FLOAT2, VES_TEXTURE_COORDINATES, 0);
-			}
-
-			SubMesh* sm = mesh->createSubMesh();
-
-			sm->vertexData = new VertexData();
-			// Set up vertex buffer
-			sm->vertexData->vertexStart = 0;
-			sm->vertexData->vertexCount = obj->triangles.size()*3;
-			sm->vertexData->vertexDeclaration = patchDecl;
-			HardwareVertexBuffer* vbuf = HardwareBufferManager::getSingleton().
-				createVertexBuffer(
-				patchDecl->getVertexSize(0),
-				sm->vertexData->vertexCount,
-				HardwareBuffer::HBU_STATIC_WRITE_ONLY,
-				true);
-
-			vbuf->writeData(0,patchDecl->getVertexSize(0)*sm->vertexData->vertexCount,&vecVertex[0]);
-			sm->vertexData->vertexBufferBinding->setBinding(0, vbuf);
-
-			//设置材质
-			string name = obj->material;
-			name = mesh->getName() + name;
-			sm->setMaterialName(name);
-			sm->mMatInitialised = true;
-
-			GLMgroup* last = obj;
-			obj = obj->next;
-			delete last;
-		}
-		Vector3 haf((maxPt.x-minPt.x)*0.5, (maxPt.y-minPt.y)*0.5, (maxPt.z-minPt.z)*0.5);
-		AABB box(Vector3(0,0,0),haf);
-
-		mesh->_setBounds(box);
-		return true;
+		return &mModel;
 	}
 
 	void CLoadOBJ::ReadMTL(GLMmodel& model,string name)
 	{
-		//string basePath = Root::getSingleton().getResourcePath();
-#ifdef WIN32
-		basePath += "\\Model\\";
-#else
-		basePath += "/Model/";
-#endif
+		string basePath = "E:\\WorkSpace\\OgreSimple\\Sample\\Resources\\Models\\";
 		vector<char> data;
 		basePath += name;
 
 		ifstream file(basePath.c_str(),ios::in);
 		if (!file)
 		{
-			assert(false && "文件不存在");
+			//assert(false && "文件不存在");
 		}
 		char buf[128],tmpName[128];
 

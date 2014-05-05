@@ -5,9 +5,6 @@ namespace OgreSimple
 {
     struct ThreadParams
     {
-        ThreadParams() : delegate(NULL)
-        {}
-
         PlatformThread::Delegate* delegate;
     };
 

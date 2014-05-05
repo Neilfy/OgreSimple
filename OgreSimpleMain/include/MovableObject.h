@@ -31,7 +31,7 @@ namespace OgreSimple
 
         virtual void Make();
         virtual void render(RenderSystem* renderer);
-    private:
+    protected:
         std::vector<ObjectSection*> mSections;
 
     };

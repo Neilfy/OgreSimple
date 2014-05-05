@@ -1,5 +1,5 @@
 #include "Texture.h"
-
+#include "string.h"
 namespace OgreSimple
 {
 	Texture::Texture(void)

@@ -4,7 +4,7 @@ set(LIBRARY_OUTPUT_PATH ../../../lib)
 set (SOURCE_FILES
   src/glew.cpp
   src/GLRenderSystem.cpp
-  src/GLvertexIndexVBO.cpp
+  src/GLVertexIndexVBO.cpp
   src/GLHardwareManager.cpp
   src/GLTexture.cpp
   src/GLTextureManager.cpp

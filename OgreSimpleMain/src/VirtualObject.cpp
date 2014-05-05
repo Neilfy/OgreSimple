@@ -4,48 +4,83 @@
 #include "OBJLoader.h"
 namespace OgreSimple
 {
-    VirtualObject::VirtualObject()
+    VirtualObject::VirtualObject(std::string name)
+	:mName(name)
     {
     }
 
     VirtualObject::~VirtualObject()
     {
-        std::vector<ObjectSection*>::iterator iter;
-        for(iter = mSections.begin(); iter != mSections.end(); ++iter)
-        {
-            ObjectSection *section = *iter;
-            delete section;
-        }
     }
 
     void VirtualObject::Make()
     {
         CLoadOBJ objLoader;
-        objLoader.load("tmp.obj");
-        ObjectSection *section = new ObjectSection();
-        float buf[]={
-            0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-            -1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-        };
+        GLMmodel *model = objLoader.load("tmp.obj");
 
-        int index[]={
-            0,1,2
-        };
+        GLMgroup* obj = model->groups;
+                while (obj)
+                {
+                        if (obj->triangles.size()==0)
+                        {
+                                obj = obj->next;
+                                continue;
+                        }
+                        vector<float> vecVertex;
+                        Vector3 tmp;
+                        int vertex_count = 0;
+                        vector<GLMtriangle>::iterator tri_it = obj->triangles.begin();
+                        vector<GLMtriangle>::iterator tri_end = obj->triangles.end();
 
-        section->createVertexData(FVF_POSITION|FVF_UV, 3, false);
-        section->addVertices((uint8*)buf, sizeof(buf));
+                        for (; tri_it != tri_end; ++tri_it)
+                        {
+                                for (int i=0; i<3; i++)
+                                {
+                                        if (tri_it->vIdx.size())
+                                        {
+                                                tmp = model->vertexs[tri_it->vIdx[i]-1];
+                                                vecVertex.push_back(tmp.x);
+                                                vecVertex.push_back(tmp.y);
+                                                vecVertex.push_back(tmp.z);
 
-        section->createIndexData(IT_32BIT, 3, false);
-        section->addIndexes((uint8*)index, sizeof(index));
+                                                vertex_count ++;
 
-        Material* mat = MaterialManager::getSingleton()->create("test");
-        Technique* tec = mat->createTechnique();
-        TextureUnit* texUnit = tec->CreateTextureUnit();
-        texUnit->SetPicName("test");
-        section->setMaterial(mat);
+                                        }
+                                        if (tri_it->nIdx.size())
+                                        {
+                                                tmp = model->normals[tri_it->nIdx[i]-1];
+                                                vecVertex.push_back(tmp.x);
+                                                vecVertex.push_back(tmp.y);
+                                                vecVertex.push_back(tmp.z);
 
-        mSections.push_back(section);
+                                        }
+					if (tri_it->tIdx.size())
+                                        {
+                                                tmp = model->texcoords[tri_it->tIdx[i]-1];
+                                                vecVertex.push_back(tmp.x);
+                                                vecVertex.push_back(tmp.y);
+                                        }
+                                }
+                        }
+
+                        tri_it = obj->triangles.begin();
+			int verType = FVF_POSITION;
+                        if (tri_it->nIdx.size())
+                        {
+				verType |= FVF_NORMAL;
+                        }
+                        if (tri_it->tIdx.size())
+                        {
+                                verType |= FVF_UV;
+                        }
+			ObjectSection *section = new ObjectSection();
+			int size_byte = vecVertex.size() * sizeof(float);
+			section->createVertexData(verType, vertex_count, false);
+        		section->addVertices((uint8*)&vecVertex[0], size_byte);
+			mSections.push_back(section);
+                        obj = obj->next;
+		}
+
     }
 
     void VirtualObject::render(RenderSystem* renderer)

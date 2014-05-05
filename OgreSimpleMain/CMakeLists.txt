@@ -23,6 +23,8 @@ set (SOURCE_FILES
   src/TextureManager.cpp
   src/thread/ResourcesLoaderThread.cpp
   src/thread/ThreadBase.cpp
+  src/VirtualObject.cpp
+  src/ModelLoader/OBJLoader.cpp
 )
 if(WIN32)
 set (SOURCE_FILES_EX
@@ -37,6 +39,7 @@ endif()
 include_directories(
   include
   include/thread/
+  include/ModelLoader/
 )
 
 add_library( OgreMain SHARED ${SOURCE_FILES} ${SOURCE_FILES_EX} )
