@@ -6,6 +6,7 @@
 #include "Camera.h"
 
 OgreSimple::OgreSimpleRoot *gRoot = NULL;
+OgreSimple::Camera * gCamera = NULL;
 
 /* 初始化材料属性、光源属性、光照模型，打开深度缓冲区 */
 void init ( void )
@@ -16,10 +17,10 @@ void init ( void )
     gRoot->initialise();
     OgreSimple::SceneManager* scene = gRoot->createSceneManager();
     scene->LoadSceneFile();
-    OgreSimple::Camera * cam = gRoot->createCamera();
-    cam->SetPosition(OgreSimple::Vector3(0, 0, 3));
-    cam->SetLookAt(OgreSimple::Vector3(0, 0, 0));
-    cam->SetUp(OgreSimple::Vector3(0, 1, 0));
+    gCamera = gRoot->createCamera();
+    gCamera->SetPosition(OgreSimple::Vector3(0, 0, 3));
+    gCamera->SetLookAt(OgreSimple::Vector3(0, 0, 0));
+    //cam->SetUp(OgreSimple::Vector3(0, 1, 0));
 }
 
 /*调用GLUT函数，绘制一个球*/
@@ -41,9 +42,14 @@ void keyboard ( unsigned char key, int x, int y)
      /*按Esc键退出*/
      switch (key)
      {
-         case 27:
-         exit ( 0 );
-         break;
+     case 'w':
+        gCamera->walk(10);
+        //glutSetWindow(mainWindow);
+        glutPostRedisplay();
+        break;
+     case 27:
+        exit ( 0 );
+        break;
      }
 }
 

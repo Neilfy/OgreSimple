@@ -107,7 +107,13 @@ namespace OgreSimple
                 + (y - rhs.y) * (y - rhs.y)
                 + (z - rhs.z) * (z - rhs.z);
         }
-
+    friend Vector3 operator-(const Vector3& rhs)
+    {
+        return Vector3(- rhs.x,
+                    - rhs.y,
+                    - rhs.z
+                    );
+    }
     public:
         float x;
         float y;
@@ -195,8 +201,8 @@ namespace OgreSimple
         static Matrix4 RotationX(float radian);
         static Matrix4 RotationY(float radian);
         static Matrix4 RotationZ(float radian);
-//        static Matrix4 Rotation(const Vector3& axis, float radian);
-//        static Matrix4 Rotation(float x, float y, float z, float radian);
+        static Matrix4 Rotation(const Vector3& axis, float radian);
+        static Matrix4 Rotation(float x, float y, float z, float radian);
         static Matrix4 PerspectiveRH(float fovy, float aspect, float near, float far);
         static Matrix4 FrustumRH(float left, float right, float bottom, float top, float near, float far);
         static Matrix4 OrthoRH(float left, float right, float bottom, float top, float near, float far);

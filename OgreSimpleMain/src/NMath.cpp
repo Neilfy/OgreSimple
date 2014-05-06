@@ -448,38 +448,38 @@ namespace OgreSimple
                         0, 0, 0, 1);
     }
 
-//     Matrix4 Matrix4::Rotation(const Vector3& axis, float radian)
-//     {
-//         return Rotation(axis.x, axis.y, axis.z, radian);
-//     }
-//     Matrix4 Matrix4::Rotation(float x, float y, float z, float radian)
-//     {
-//         Vector3 v(x, y, z);
-//         v.Normalize();
-//
-//         float sine = sin(radian);
-//         float cosine = cos(radian);
-//
-//         float one_minus_cosine = 1 - cosine;
-//
-//         return Matrix4(
-//             cosine + one_minus_cosine * v.x * v.x,
-//             one_minus_cosine * v.x * v.y - v.z * sine,
-//             one_minus_cosine * v.x * v.z + v.y * sine,
-//             0,
-//
-//             one_minus_cosine * v.x * v.y + v.z * sine,
-//             cosine + one_minus_cosine * v.y * v.y,
-//             one_minus_cosine * v.y * v.z - v.x * sine,
-//             0,
-//
-//             one_minus_cosine * v.x * v.z - v.y * sine,
-//             one_minus_cosine * v.y * v.z + v.x * sine,
-//             cosine + one_minus_cosine * v.z * v.z,
-//             0,
-//
-//             0, 0, 0, 1);
-//     }
+     Matrix4 Matrix4::Rotation(const Vector3& axis, float radian)
+     {
+         return Rotation(axis.x, axis.y, axis.z, radian);
+     }
+     Matrix4 Matrix4::Rotation(float x, float y, float z, float radian)
+     {
+         Vector3 v(x, y, z);
+         v.Normalize();
+
+         float sine = sin(radian);
+         float cosine = cos(radian);
+
+         float one_minus_cosine = 1 - cosine;
+
+         return Matrix4(
+             cosine + one_minus_cosine * v.x * v.x,
+             one_minus_cosine * v.x * v.y - v.z * sine,
+             one_minus_cosine * v.x * v.z + v.y * sine,
+             0,
+
+             one_minus_cosine * v.x * v.y + v.z * sine,
+             cosine + one_minus_cosine * v.y * v.y,
+             one_minus_cosine * v.y * v.z - v.x * sine,
+             0,
+
+             one_minus_cosine * v.x * v.z - v.y * sine,
+             one_minus_cosine * v.y * v.z + v.x * sine,
+             cosine + one_minus_cosine * v.z * v.z,
+             0,
+
+             0, 0, 0, 1);
+     }
 
     Matrix4 Matrix4::PerspectiveRH(float fovy, float aspect, float near, float far)
     {

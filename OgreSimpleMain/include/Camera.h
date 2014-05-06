@@ -8,9 +8,9 @@ namespace OgreSimple
 {
     class Camera
     {
-        public:
-            Camera(void);
-            virtual ~Camera(void){};
+    public:
+        Camera(void);
+        virtual ~Camera(void){};
 
         public:
         //virtual void Update(const sTileCoord& mapCenter, int iMapHeight, unsigned int carDir, bool mapCenterChanged);
@@ -55,8 +55,7 @@ namespace OgreSimple
         }
 
         void SetPosition(const Vector3& pos);
-        void SetLookAt(const Vector3& at);
-        void SetUp(const Vector3& up);
+        void SetLookAt(const Vector3& atPos);
 
         void SetFovy(float fovy);
         void SetClips(float fNear, float fFar);
@@ -68,6 +67,16 @@ namespace OgreSimple
             mViewportResized = false;
         }
 
+        void walk(int units);
+
+    private:
+		Vector3& _axisX();
+
+		Vector3& _axisY();
+
+		Vector3& _axisZ();
+
+		Vector3& _position();
     protected:
         Vector3        mPosition;
         Vector3        mAt;
@@ -86,7 +95,7 @@ namespace OgreSimple
         Matrix4        mMatPrj;
         bool        mMatViewDirty;
         Matrix4        mMatView;
-        Matrix4     mMatrix;
+        Matrix4     mMatrixBase;
     };
 }
 

@@ -18,6 +18,26 @@ namespace OgreSimple
         mFrustum.Set(mNear, mFar, 1.f, 1.f);
     };
 
+    Vector3& Camera::_axisX()
+	{
+		return *(Vector3*)(&mMatrixBase._11);
+	}
+
+	Vector3& Camera::_axisY()
+	{
+		return *(Vector3*)(&mMatrixBase._21);
+	}
+
+	Vector3& Camera::_axisZ()
+	{
+		return *(Vector3*)(&mMatrixBase._31);
+	}
+
+	Vector3& Camera::_position()
+	{
+		return *(Vector3*)(&mMatrixBase._41);
+	}
+
 
     const Matrix4& Camera::GetProjectionMatrix(void)
     {
@@ -38,7 +58,14 @@ namespace OgreSimple
     {
         if (mMatViewDirty)
         {
-        mMatView = Matrix4::LookAtRH(mPosition, mAt, mUp);
+            float pr = - _position().Dot(_axisX());
+            float pu = - _position().Dot(_axisY());
+            float pd = - _position().Dot(- _axisZ());// opengl z·´Ïò
+            mMatrixBase._14 = pr;
+            mMatrixBase._24 = pu;
+            mMatrixBase._34 = pd;
+            mMatrixBase._44 = 1.0f;
+            mMatView = mMatrixBase;
         }
 
         return mMatView;
@@ -46,33 +73,21 @@ namespace OgreSimple
 
     void Camera::SetPosition(const Vector3& pos)
     {
-        if (mPosition != pos)
-        {
-            mPosition = pos;
-            mMatrix = Matrix4::Translation(mPosition);
-
-            // >>> to-do, aabb should moved to frustum
-            //mWorldAabb.Translate(mPosition);
-            mMatViewDirty = true;
-        }
+		_position() = pos;
+		mMatViewDirty = true;
     }
 
-    void Camera::SetLookAt(const Vector3& at)
+    void Camera::SetLookAt(const Vector3& atPos)
     {
-        if (mAt != at)
-        {
-            mAt = at;
-            mMatViewDirty = true;
-        }
-    }
+		_axisZ() = atPos - _position();
+		_axisZ().Normalize();
 
-    void Camera::SetUp(const Vector3& up)
-    {
-        if (mUp != up)
-        {
-            mUp = up;
-            mMatViewDirty = true;
-        }
+		_axisX() = _axisZ().Cross(Vector3(0, 1, 0));
+		_axisX().Normalize();
+
+		_axisY() = _axisX().Cross(_axisZ());
+		_axisY().Normalize();
+		mMatViewDirty = true;
     }
 
     void Camera::SetFovy(float fovy)
@@ -103,5 +118,12 @@ namespace OgreSimple
         mFrustum.Set(mNear, mFar, w, h);
 
         mMatProjDirty = true;
+    }
+
+    void Camera::walk(int units)
+    {
+        _position() += _axisZ() * units;
+
+		mMatViewDirty = true;
     }
 }
