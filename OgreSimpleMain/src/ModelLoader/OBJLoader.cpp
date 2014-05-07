@@ -1,4 +1,5 @@
 #include "OBJLoader.h"
+#include "string.h"
 namespace OgreSimple
 {
 	CLoadOBJ::CLoadOBJ()//
@@ -19,7 +20,11 @@ namespace OgreSimple
 
 	GLMmodel* CLoadOBJ::load(string path)
 	{
+#ifdef WIN32
 	    path = "E:\\WorkSpace\\OgreSimple\\Sample\\Resources\\Models\\tmp.obj";
+#else
+		path = "/home/nf/WorkSpace/OgreSimple/Sample/Resources/Models/tmp.obj";
+#endif
 		ifstream file(path.c_str(),ios::in);
 		if (!file)
 		{
@@ -157,7 +162,11 @@ namespace OgreSimple
 
 	void CLoadOBJ::ReadMTL(GLMmodel& model,string name)
 	{
-		string basePath = "E:\\WorkSpace\\OgreSimple\\Sample\\Resources\\Models\\";
+#ifdef WIN32
+           string basePath = "E:\\WorkSpace\\OgreSimple\\Sample\\Resources\\Models\\";
+#else
+               string basePath = "/home/nf/WorkSpace/OgreSimple/Sample/Resources/Models/";
+#endif
 		vector<char> data;
 		basePath += name;
 

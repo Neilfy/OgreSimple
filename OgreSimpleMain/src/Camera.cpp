@@ -86,7 +86,6 @@ namespace OgreSimple
 		_axisX().Normalize();
 
 		_axisY() = _axisX().Cross(_axisZ());
-		_axisY().Normalize();
 		mMatViewDirty = true;
     }
 
@@ -120,10 +119,34 @@ namespace OgreSimple
         mMatProjDirty = true;
     }
 
-    void Camera::walk(int units)
+    void Camera::Walk(int units)
     {
         _position() += _axisZ() * units;
 
 		mMatViewDirty = true;
+    }
+
+    void Camera::Strafe(int units)
+    {
+	 _position() += _axisX() * units;
+	 mMatViewDirty = true;
+    }
+
+    void Camera::Yaw(float angle)
+    {
+        Matrix4 rota = Matrix4::Rotation(Vector3(0, 1, 0), angle);
+	mMatrixBase = mMatrixBase * rota;
+	mMatViewDirty = true;
+    }
+    void Camera::Pitch( float angle )
+    {
+        Matrix4 rota = Matrix4::Rotation(_axisX(), angle);
+        mMatrixBase = mMatrixBase * rota;
+        mMatViewDirty = true;
+    }
+    void Camera::Fly( int units )
+    {
+	_position() += Vector3(0, 1, 0) * units;
+        mMatViewDirty = true;
     }
 }

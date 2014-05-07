@@ -10,8 +10,8 @@ namespace OgreSimple
 
     void* ThreadFunc(void* params)
     {
-        ThreadParams* thread_params = static_cast<ThreadParams*>(params);
-        PlatformThread::Delegate* delegate = thread_params->delegate;
+        //ThreadParams* thread_params = static_cast<ThreadParams*>(params);
+        PlatformThread::Delegate* delegate = static_cast<PlatformThread::Delegate*>(params);//thread_params->delegate;
         delegate->ThreadMain();
         return NULL; 
     }
@@ -21,7 +21,7 @@ namespace OgreSimple
         ThreadParams params;
         params.delegate = delegate;
         
-        int err = pthread_create(handle, NULL, OgreSimple::ThreadFunc, &params);//if OK return 0
+        int err = pthread_create(handle, NULL, OgreSimple::ThreadFunc, delegate);//if OK return 0
         return !err; 
     }
 

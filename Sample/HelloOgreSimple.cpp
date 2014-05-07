@@ -1,4 +1,5 @@
 # include <GL/glut.h>
+#include <stdio.h>
 # include <stdlib.h>
 #include "OgreSimpleRoot.h"
 #include "GLRenderSystem.h"
@@ -26,7 +27,9 @@ void init ( void )
 /*调用GLUT函数，绘制一个球*/
 void display ( void )
 {
+    //printf("====================\n");
     gRoot->renderScene();
+    glutSwapBuffers();
 }
 
 /* 定义GLUT的reshape函数，w、h分别是当前窗口的宽和高*/
@@ -43,9 +46,22 @@ void keyboard ( unsigned char key, int x, int y)
      switch (key)
      {
      case 'w':
-        gCamera->walk(10);
-        //glutSetWindow(mainWindow);
-        glutPostRedisplay();
+        gCamera->Walk(1);
+        break;
+     case 's':
+        gCamera->Walk(-1);
+	break;
+     case 'a':
+        gCamera->Yaw(0.1);
+	break;
+     case 'd':
+        gCamera->Yaw(-0.1);
+	break;
+     case 'e':
+        gCamera->Fly(1);
+	break;
+     case 'q':
+        gCamera->Fly(-1);
         break;
      case 27:
         exit ( 0 );
@@ -59,7 +75,7 @@ int main(int argc, char** argv)
      /* GLUT环境初始化*/
     glutInit (&argc, argv);
      /* 显示模式初始化 */
-     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
      /* 定义窗口大小 */
      glutInitWindowSize (1280, 720);
      /* 定义窗口位置 */
@@ -70,6 +86,7 @@ int main(int argc, char** argv)
      init ( );
      /* 注册OpenGL绘图函数 */
      glutDisplayFunc ( display );
+     glutIdleFunc(display);
      /* 注册窗口大小改变时的响应函数 */
      glutReshapeFunc ( reshape );
      /* 注册键盘响应函数 */

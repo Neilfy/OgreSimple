@@ -67,7 +67,11 @@ namespace OgreSimple
             mViewportResized = false;
         }
 
-        void walk(int units);
+        void Walk(int units);
+        void Strafe(int units);
+	void Yaw( float angle );
+	void Pitch( float angle );
+	void Fly( int units );
 
     private:
 		Vector3& _axisX();
