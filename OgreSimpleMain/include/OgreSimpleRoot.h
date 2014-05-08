@@ -33,11 +33,10 @@ namespace OgreSimple
 
         OgreSimpleRoot(void);
         ~OgreSimpleRoot(void);
-        static OgreSimpleRoot& getSingleton(){ return *ms_Singleton; };
-        static OgreSimpleRoot* getSingletonPtr(){ return ms_Singleton; };
+        static OgreSimpleRoot* getSingleton(){ return ms_Singleton; };
 
-        //string& getResourcePath(){ return m_BasePath; };
-        //void setResourcePath(string& path){ m_BasePath = path; };
+        std::string getResourcePath(){ return m_BasePath; };
+        void setResourcePath(std::string path){ m_BasePath = path; };
 
         void setRenderSystem(RenderSystem* system);
         void initialise();

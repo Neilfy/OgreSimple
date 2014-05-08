@@ -13,6 +13,7 @@ OgreSimple::Camera * gCamera = NULL;
 void init ( void )
 {
     gRoot = new OgreSimple::OgreSimpleRoot();
+    gRoot->setResourcePath("E:/WorkSpace/OgreSimple/Sample/Resources");
     OgreSimple::GLRenderSystem *rs = new OgreSimple::GLRenderSystem();
     gRoot->setRenderSystem(rs);
     gRoot->initialise();

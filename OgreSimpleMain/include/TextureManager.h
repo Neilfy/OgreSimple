@@ -19,6 +19,7 @@ namespace OgreSimple
 
 	public:
 		Texture* GetTexture(const std::string& picName);
+		void LoadTexture(const std::string& picName);
 		bool DeleteTexture(const std::string& texName);
 
 	protected:

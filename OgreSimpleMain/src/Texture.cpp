@@ -1,7 +1,7 @@
 #include "Texture.h"
 #include "string.h"
 #include "ImageLoader/CJPGLoader.h"
-#include <string>
+#include "OgreSimpleRoot.h"
 #include <stdio.h>
 namespace OgreSimple
 {
@@ -10,6 +10,8 @@ namespace OgreSimple
         , mHeight(0)
         , mPixelType(PT_RGBA)
         , mTexData(NULL)
+	, mIsLoaded(false)
+	, mIsCreated(false)
 	{
 	}
 
@@ -17,10 +19,11 @@ namespace OgreSimple
 	{
     }
 
-    bool Texture::Load(const std::string& picName)
+    void Texture::LoadFile(const std::string& picName)
     {
-        std::string path = "E:\\WorkSpace\\OgreSimple\\Sample\\Resources\\Models\\back.jpg";
-        FILE* pFile = fopen(path.c_str(), "w");
+        string base_path = OgreSimpleRoot::getSingleton()->getResourcePath();
+        string file_path = base_path + "/" + picName;
+        FILE* pFile = fopen(file_path.c_str(), "r");
         fseek (pFile , 0 , SEEK_END);
         unsigned int dwSize = ftell (pFile);
         rewind (pFile);
@@ -44,8 +47,16 @@ namespace OgreSimple
 			delete loader;
 		}
 
-        CreateTextureImpl();
+        //CreateTextureImpl();
+	mIsLoaded = true;
+    }
 
-        return true;
+    void Texture::Create()
+    {
+        if(mIsLoaded)
+        {
+            CreateTextureImpl();
+            mIsCreated = true;
+        }
     }
 }

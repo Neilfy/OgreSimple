@@ -28,19 +28,31 @@ namespace OgreSimple
 		map<string, Texture*>::iterator it = mTextures.find(picName);
 		if (it != mTextures.end())
 		{
-			return it->second;
+			Texture* tex = it->second;
+			if(!tex->IsCreated())
+			{
+				tex->Create();
+			}
+			return tex;
 		}
 
-		Texture *tex = CreateTexture();
-
-		if (!tex->Load(picName))
-		{
-			return NULL;
-		}
-
-		mTextures.insert(make_pair(picName, tex));
-		return tex;
+		return NULL;
 	}
+
+	void TextureManager::LoadTexture(const string& picName)
+        {
+                map<string, Texture*>::iterator it = mTextures.find(picName);
+                if (it != mTextures.end())
+                {
+                        return ;
+                }       
+
+                Texture *tex = CreateTexture();
+
+                tex->LoadFile(picName);
+
+                mTextures.insert(make_pair(picName, tex));
+        }
 
 	bool TextureManager::DeleteTexture(const std::string& texName)
 	{

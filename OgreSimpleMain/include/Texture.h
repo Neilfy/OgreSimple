@@ -13,11 +13,22 @@ namespace OgreSimple
 		virtual ~Texture(void);
 
 	public:
-		virtual bool Load(const std::string& picName);
+		virtual void LoadFile(const std::string& picName);
+		virtual void Create();
 
         virtual uint32 GetTexWidth() const { return mWidth; }
         virtual uint32 GetTexHeight() const { return mHeight; }
         virtual PixelType GetPixelType() const { return mPixelType; }
+		bool IsLoaded() const
+		{
+			return mIsLoaded;
+		}
+
+		bool IsCreated() const
+                {
+                        return mIsCreated;
+                }
+
     protected:
         virtual void CreateTextureImpl() = 0;
 
@@ -29,6 +40,9 @@ namespace OgreSimple
         uint32      mHeight;
         PixelType   mPixelType;
         uint8       *mTexData;
+	private:
+		bool mIsLoaded;
+		bool mIsCreated;
 	};
 
 }

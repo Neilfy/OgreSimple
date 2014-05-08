@@ -2,6 +2,9 @@
 #include "RenderOperation.h"
 #include "RenderSystem.h"
 #include "OBJLoader.h"
+#include "MaterialManager.h"
+#include "Material.h"
+#include "OgreSimpleRoot.h"
 namespace OgreSimple
 {
     VirtualObject::VirtualObject(std::string name)
@@ -15,8 +18,35 @@ namespace OgreSimple
 
     void VirtualObject::Make()
     {
+        std::string base_path = OgreSimpleRoot::getSingleton()->getResourcePath();
+        std::string file_path = base_path + "/Models/" + mName;
         CLoadOBJ objLoader;
-        GLMmodel *model = objLoader.load("tmp.obj");
+        GLMmodel *model = objLoader.load(file_path);
+        for(int i=0;i<model->materials.size();i++)
+        {
+            GLMmaterial& materials = model->materials[i];
+			Material* mat = MaterialManager::getSingleton()->create(materials.name);
+			if(mat)
+			{
+                Technique* tec = mat->createTechnique();
+                        //tec->mAmbient = Color(materials.ambient[0], materials.ambient[1], materials.ambient[2]);
+                        //tec->mDiffuse = Color(materials.diffuse[0], materials.diffuse[1], materials.diffuse[2],materials.diffuse[3]);
+                        //tec->mSpecular = Color(materials.specular[0], materials.specular[1], materials.specular[2],materials.specular[3]);
+                        //tec->mShininess = materials.shininess;
+                        //tec->mLightingEnabled = false;
+                if(!materials.texName.empty())
+                {
+                    std::string tex_dir = "Models/";
+                    size_t pos = mName.find_last_of("/");
+                    tex_dir = mName.substr(0, pos+1);
+
+                    TextureUnit* texUnit = tec->CreateTextureUnit();
+                    texUnit->SetPicName(tex_dir + materials.texName);
+                    texUnit->LoadTexture();
+                }
+
+			}
+        }
 
         GLMgroup* obj = model->groups;
                 while (obj)
@@ -77,6 +107,10 @@ namespace OgreSimple
 			int size_byte = vecVertex.size() * sizeof(float);
 			section->createVertexData(verType, vertex_count, false);
         		section->addVertices((uint8*)&vecVertex[0], size_byte);
+
+			Material* mat = MaterialManager::getSingleton()->GetByName(obj->material);
+			section->setMaterial(mat);
+
 			mSections.push_back(section);
                         obj = obj->next;
 		}

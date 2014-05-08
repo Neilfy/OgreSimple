@@ -58,7 +58,7 @@ namespace OgreSimple
     {
         //MovableObject *obj = new MovableObject();
         //obj->Make();
-        VirtualObject *obj = new VirtualObject("tmp");
+        VirtualObject *obj = new VirtualObject("tmp/tmp.obj");
         obj->Make();
         return obj;
     }

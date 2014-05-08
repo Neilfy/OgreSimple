@@ -14,6 +14,7 @@ namespace OgreSimple
         static MaterialManager* getSingleton();
 
         Material* create(const std::string& name);
+        Material* GetByName(const std::string& name);
     private:
         static MaterialManager* mSingleton;
         std::map<std::string, Material*>	mMaterials;

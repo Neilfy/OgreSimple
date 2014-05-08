@@ -52,9 +52,9 @@ namespace OgreSimple
 		{
 		case PT_RGBA:
         case PT_ALPHA:
+		case PT_RGB:
 			glTexImage2D(GL_TEXTURE_2D, 0, pixelType, mWidth, mHeight, 0, pixelType, GL_UNSIGNED_BYTE, mTexData);
 			break;
-
         default:
             return ;
 		}

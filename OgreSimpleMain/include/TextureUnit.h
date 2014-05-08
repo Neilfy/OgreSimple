@@ -18,7 +18,7 @@ namespace OgreSimple
 		}
 
 		Texture* GetTexture();
-
+		void LoadTexture();
 		void SetPicName(const std::string& picName)
 		{
 			mPicName = picName;

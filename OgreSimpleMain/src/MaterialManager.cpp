@@ -38,4 +38,16 @@ namespace OgreSimple
 
 		return mat;
 	}
+
+        Material* MaterialManager::GetByName(const std::string& name)
+        {
+                std::map<std::string, Material*>::iterator it = mMaterials.find(name);
+                Material* mat = NULL;
+                if (it != mMaterials.end())
+                {
+                        mat = it->second;
+                }
+		return mat;
+
+        }
 }

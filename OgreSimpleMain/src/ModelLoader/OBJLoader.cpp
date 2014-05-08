@@ -1,5 +1,8 @@
 #include "OBJLoader.h"
 #include "string.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 namespace OgreSimple
 {
 	CLoadOBJ::CLoadOBJ()//
@@ -20,11 +23,9 @@ namespace OgreSimple
 
 	GLMmodel* CLoadOBJ::load(string path)
 	{
-#ifdef WIN32
-	    path = "E:\\WorkSpace\\OgreSimple\\Sample\\Resources\\Models\\tmp.obj";
-#else
-		path = "/home/nf/WorkSpace/OgreSimple/Sample/Resources/Models/tmp.obj";
-#endif
+		size_t pos = path.find_last_of("/");
+		string base_path = path.substr(0, pos+1);
+
 		ifstream file(path.c_str(),ios::in);
 		if (!file)
 		{
@@ -81,7 +82,7 @@ namespace OgreSimple
 			case 'm':
 				sscanf(buf, "%*[^ ]%s", tmpName);
 				mModel.mtllibname = tmpName;
-				ReadMTL(mModel, tmpName);
+				ReadMTL(mModel, base_path + tmpName);
 				break;
 			case 'u':
 				sscanf(buf,"%*[^ ]%s",tmpName);
@@ -162,15 +163,9 @@ namespace OgreSimple
 
 	void CLoadOBJ::ReadMTL(GLMmodel& model,string name)
 	{
-#ifdef WIN32
-           string basePath = "E:\\WorkSpace\\OgreSimple\\Sample\\Resources\\Models\\";
-#else
-               string basePath = "/home/nf/WorkSpace/OgreSimple/Sample/Resources/Models/";
-#endif
 		vector<char> data;
-		basePath += name;
 
-		ifstream file(basePath.c_str(),ios::in);
+		ifstream file(name.c_str(),ios::in);
 		if (!file)
 		{
 			//assert(false && "文件不存在");

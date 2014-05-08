@@ -21,11 +21,21 @@ namespace OgreSimple
 		// get from texture manager
 		TextureManager* texMgr = TextureManager::getSingleton();
 		if(texMgr)
-        {
-            mTexture = texMgr->GetTexture(this->mPicName);
-        }
+       		{
+            		mTexture = texMgr->GetTexture(this->mPicName);
+        	}
 
 		return mTexture;
 	}
+
+	void TextureUnit::LoadTexture(void)
+        {   
+                TextureManager* texMgr = TextureManager::getSingleton();
+                if(texMgr)
+                {
+                        texMgr->LoadTexture(this->mPicName);
+                }
+
+        } 
 
 }
