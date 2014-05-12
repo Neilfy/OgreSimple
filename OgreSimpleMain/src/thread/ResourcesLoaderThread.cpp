@@ -18,18 +18,18 @@ namespace OgreSimple
             return ;
         }
 
-        std::string name = mTasks.front();
+        ResourceInfo task_info = mTasks.front();
         //printf(name);
         if(mSceneManger)
         {
-            MovableObject *obj = mSceneManger->CreateObject();
+            MovableObject *obj = mSceneManger->CreateObject(task_info);
             mSceneManger->AttachObject(obj);
         }
         mTasks.pop();
     }
 
-    void ResourcesLoaderThread::addTask(std::string resourceName)
+    void ResourcesLoaderThread::addTask(ResourceInfo taskInfo)
     {
-        mTasks.push(resourceName);
+        mTasks.push(taskInfo);
     }
 }

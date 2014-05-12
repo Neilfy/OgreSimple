@@ -170,12 +170,13 @@ namespace OgreSimple
 		{
 			//assert(false && "文件不存在");
 		}
-		char buf[128],tmpName[128];
+		char buf[128] = {0};
+		char tmpName[128] = {0};
 
 		while( !file.eof() ) {
 
 			file.getline( buf, 128 );
-			char type[ 10 ];
+			char type[10] = {0};
 			sscanf( buf, "%[^ ]",type );
 			sscanf( type, "%*[^a-z|A-Z|#]%s", type );
 

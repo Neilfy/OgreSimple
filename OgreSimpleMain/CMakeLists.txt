@@ -62,7 +62,6 @@ set (SOURCE_FILES
   src/MovableObject.cpp
   src/VertexIndexData.cpp
   src/HardwareManager.cpp
-  src/Renderable.cpp
   src/MaterialManager.cpp
   src/Material.cpp
   src/Technique.cpp
@@ -73,6 +72,9 @@ set (SOURCE_FILES
   src/thread/ThreadBase.cpp
   src/VirtualObject.cpp
   src/ModelLoader/OBJLoader.cpp
+  src/Mesh.cpp
+  src/MeshManager.cpp
+  src/SubMesh.cpp
 )
 if(WIN32)
 set (SOURCE_FILES_EX

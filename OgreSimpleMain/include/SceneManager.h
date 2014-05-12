@@ -11,6 +11,7 @@ namespace OgreSimple
     class Camera;
     class MovableObject;
     class ResourcesLoaderThread;
+    struct ResourceInfo; 
     class SceneManager
     {
     public:
@@ -29,7 +30,7 @@ namespace OgreSimple
     public:
 
         virtual void renderScene(RenderSystem* rs, Camera* cam, Viewport& vp);
-        MovableObject* CreateObject(/*Type*/);
+        MovableObject* CreateObject(ResourceInfo objInfo);
         void AttachObject(MovableObject* obj);
         void LoadSceneFile(/*file name*/);
     private:

@@ -2,38 +2,30 @@
 #define MOVABLEOBJECT_H
 
 #include <vector>
-#include "Renderable.h"
+#include "NMath.h"
 
 namespace OgreSimple
 {
     class RenderSystem;
     class Material;
+    class Mesh;
     class MovableObject
     {
-    public:
-        class ObjectSection : public Renderable
-        {
-        public:
-            ObjectSection();
-            virtual ~ObjectSection();
-
-            void render(RenderSystem* renderer);
-
-            void setMaterial(Material* mat);
-
-        private:
-            Material* mMat;
-        };
-
     public:
         MovableObject();
         virtual ~MovableObject();
 
         virtual void Make();
         virtual void render(RenderSystem* renderer);
+        virtual void setPosition(Vector3& pos);
+        virtual void setScale(Vector3& scale);
+        virtual Matrix4& getTransform();
     protected:
-        std::vector<ObjectSection*> mSections;
-
+        Mesh* mMesh;
+        Vector3 mPosition;
+        Vector3 mScale;
+        Matrix4 mTransform;
+        bool mIsTransformNeedUpdate;
     };
 }
 #endif

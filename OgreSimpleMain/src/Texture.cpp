@@ -30,7 +30,7 @@ namespace OgreSimple
 
         uint8* stream = new uint8[dwSize];
         fread(stream,1,dwSize,pFile);
-
+        fclose(pFile);
 
 		{
 			CJPGLoader* loader = new CJPGLoader();

@@ -2,10 +2,19 @@
 #define RESOURCESLOADERTHREAD_H
 
 #include "ThreadBase.h"
+#include "NMath.h"
 #include <queue>
 #include <string>
+
 namespace OgreSimple
 {
+    struct ResourceInfo
+    {
+        std::string name;
+        std::string path;
+        Vector3 pos;
+    };
+
     class SceneManager;
     class ResourcesLoaderThread : public ThreadBase
     {
@@ -14,9 +23,9 @@ namespace OgreSimple
         ~ResourcesLoaderThread();
 
         virtual void DoWork();
-        void addTask(std::string resourceName);
+        void addTask(ResourceInfo taskInfo);
     private:
-        std::queue<std::string> mTasks;
+        std::queue<ResourceInfo> mTasks;
         SceneManager* mSceneManger;
     };
 }

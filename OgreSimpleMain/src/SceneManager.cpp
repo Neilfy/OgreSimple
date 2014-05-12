@@ -54,11 +54,11 @@ namespace OgreSimple
 
     }
 
-    MovableObject* SceneManager::CreateObject()
+    MovableObject* SceneManager::CreateObject(ResourceInfo objInfo)
     {
         //MovableObject *obj = new MovableObject();
         //obj->Make();
-        VirtualObject *obj = new VirtualObject("tmp/tmp.obj");
+        VirtualObject *obj = new VirtualObject(objInfo.name);
         obj->Make();
         return obj;
     }
@@ -72,7 +72,8 @@ namespace OgreSimple
     {
         //TODO
         //temp source code for testing Resource loader thread.
-        mThread->addTask("tmp");
+        ResourceInfo task_info = {"tmp/tmp.obj", "tmp/tmp.obj", Vector3(0,0,0)};
+        mThread->addTask(task_info);
 
     }
 
