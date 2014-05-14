@@ -23,6 +23,7 @@ namespace OgreSimple
         virtual void setWorldMatrix(const Matrix4& mat) = 0;
         virtual void setViewMatrix(const Matrix4& mat) = 0;
         virtual void setProjectionMatrix(const Matrix4& mat) = 0;
+		virtual void clearFrameBuffer() = 0;
 
         virtual void setMaterial(Material* mat) = 0;
     };

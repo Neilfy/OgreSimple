@@ -34,8 +34,10 @@ namespace OgreSimple
         mRenderSystem = rs;
         mCamera->SetViewport(vp);
         rs->setViewport(vp);
-                rs->setProjectionMatrix(cam->GetProjectionMatrix());
-                rs->setViewMatrix(cam->GetViewMatrix());
+        rs->setProjectionMatrix(cam->GetProjectionMatrix());
+        rs->setViewMatrix(cam->GetViewMatrix());
+
+		rs->clearFrameBuffer();
 
         std::vector<MovableObject*>::iterator iter;
         for(iter = mQueue.begin(); iter != mQueue.end(); ++iter)
@@ -60,6 +62,9 @@ namespace OgreSimple
         //obj->Make();
         VirtualObject *obj = new VirtualObject(objInfo.name);
         obj->Make();
+		obj->setPosition(objInfo.pos);
+		Vector3 scale(2, 2, 2);
+		obj->setScale(scale);
         return obj;
     }
 
@@ -72,7 +77,8 @@ namespace OgreSimple
     {
         //TODO
         //temp source code for testing Resource loader thread.
-        ResourceInfo task_info = {"tmp/tmp.obj", "tmp/tmp.obj", Vector3(0,0,0)};
+        ResourceInfo task_info = {"F-35_Lightning_II/F-35_Lightning_II.obj", "F-35_Lightning_II/F-35_Lightning_II.obj", Vector3(0,0,10)};
+        //ResourceInfo task_info = {"tmp/tmp.obj", "tmp/tmp.obj", Vector3(0,0,10)};
         mThread->addTask(task_info);
 
     }

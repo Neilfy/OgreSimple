@@ -27,6 +27,9 @@ namespace OgreSimple
 
     void MovableObject::render(RenderSystem* renderer)
     {
+		Matrix4 transform = getTransform();
+		renderer->setWorldMatrix(transform);
+
         uint16 num_submesh = mMesh->getNumSubMeshes();
         for(int i=0; i < num_submesh; ++i)
         {
@@ -58,6 +61,14 @@ namespace OgreSimple
 
     Matrix4& MovableObject::getTransform()
     {
+		if(mIsTransformNeedUpdate)
+		{
+			mTransform = Matrix4::Identity;
+			mTransform = mTransform.Translation(mPosition);
+			mTransform *= mTransform.Scaling(mScale);
+			mIsTransformNeedUpdate = false;
+		}
+		return mTransform;
     }
 
 }

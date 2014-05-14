@@ -10,7 +10,7 @@
 //#include "GLRenderSystem.h"
 //#include "RenderWindow.h"
 //#include "MovableObject.h"
-//#include "MeshManager.h"
+#include "MeshManager.h"
 #include "MaterialManager.h"
 //#include "Entity.h"
 //#include "Light.h"
@@ -27,7 +27,7 @@ namespace OgreSimple
         ms_Singleton = this;
         mMatManager = new MaterialManager();
 
-        //mMeshManager = new MeshManager();
+        mMeshManager = new MeshManager();
         //mMatManager = new MaterialManager;
 
         //mEntityFactory = new EntityFactory();
@@ -43,11 +43,6 @@ namespace OgreSimple
             delete mSceneManager;
         }
 
-        if(mMatManager)
-        {
-            delete mMatManager;
-        }
-
         if(mCamera)
         {
             delete mCamera;
@@ -57,6 +52,16 @@ namespace OgreSimple
         {
             delete mRenderer;
         }
+
+		if(mMeshManager)
+		{
+			delete mMeshManager;
+		}
+
+		if(mMatManager)
+		{
+			delete mMatManager;
+		}
 
         //delete mMeshManager;
         //delete mMatManager;

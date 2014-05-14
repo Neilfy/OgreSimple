@@ -4,6 +4,7 @@
 #include "MaterialManager.h"
 #include "Material.h"
 #include "ModelLoader/OBJLoader.h"
+#include <algorithm>
 namespace OgreSimple {
 
     Mesh::Mesh(std::string name)
@@ -42,12 +43,21 @@ namespace OgreSimple {
                 if(!materials.texName.empty())
                 {
                     std::string tex_dir = "Models/";
-                    size_t pos = m_Name.find_last_of("/");
-                    tex_dir += m_Name.substr(0, pos+1);
+                    std::string ext;
 
-                    TextureUnit* texUnit = tec->CreateTextureUnit();
-                    texUnit->SetPicName(tex_dir + materials.texName);
-                    texUnit->LoadTexture();
+					size_t pos = materials.texName.find_last_of(".");
+					ext = materials.texName.substr(pos+1);
+					std::transform(ext.begin(),ext.end(),ext.begin(),::tolower);
+
+					pos = m_Name.find_last_of("/");
+                    tex_dir += m_Name.substr(0, pos+1);
+					
+					if(ext == "jpg")
+					{
+						TextureUnit* texUnit = tec->CreateTextureUnit();
+						texUnit->SetPicName(tex_dir + materials.texName);
+						texUnit->LoadTexture();
+					}
                 }
 
 			}

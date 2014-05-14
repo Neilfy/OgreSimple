@@ -16,6 +16,8 @@ namespace OgreSimple
         HardwareManager *mHardwareManager;
         TextureManager *mTextureManager;
         Viewport* mViewport;
+		Matrix4 mWorldMatrix;
+		Matrix4 mViewMatrix;
 
     private:
         void initialiseContext();
@@ -25,12 +27,9 @@ namespace OgreSimple
 
         void initialise();
         void render(RenderOperation* ro);
-        //void _setProjectionMatrix(const Matrix4 &m);
-        //void _setViewMatrix(const Matrix4 &m);
-        //void _setWorldMatrix( const Matrix4 &m );
-        //void clearFrameBuffer(unsigned int buffers,
-        //    const ColourValue& colour = ColourValue::Black,
-        //    float depth = 1.0f, unsigned short stencil = 0);
+        void clearFrameBuffer(/*unsigned int buffers,
+            const ColourValue& colour = ColourValue::Black,
+            float depth = 1.0f, unsigned short stencil = 0*/);
         void setViewport(const Viewport& vp);
 
         void setWorldMatrix(const Matrix4& mat);

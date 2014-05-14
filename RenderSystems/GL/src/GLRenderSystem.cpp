@@ -42,13 +42,17 @@ namespace OgreSimple
 
     void GLRenderSystem::setWorldMatrix(const Matrix4& mat)
     {
+		mWorldMatrix = mat;
+
         glMatrixMode(GL_MODELVIEW);
-        Matrix4 worldmat = mat.GetTranspose();
-        glLoadMatrixf(worldmat.GetRawPointer());
+		Matrix4 world_view = (mViewMatrix * mat).GetTranspose();
+        glLoadMatrixf(world_view.GetRawPointer());
     }
 
     void GLRenderSystem::setViewMatrix(const Matrix4& mat)
     {
+		mViewMatrix = mat;
+
         glMatrixMode(GL_MODELVIEW);
         Matrix4 viewmat = mat.GetTranspose();
         glLoadMatrixf(viewmat.GetRawPointer());
@@ -61,14 +65,17 @@ namespace OgreSimple
         glLoadMatrixf(promat.GetRawPointer());
     }
 
+	void GLRenderSystem::clearFrameBuffer()
+	{
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearDepth(1.0f);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
     void GLRenderSystem::render(RenderOperation* ro)
     {
         RenderSystem::render(ro);
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClearDepth(1.0f);
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         const VertexData *vertexData = ro->mVertexData;
         void* pBuffer = NULL;
