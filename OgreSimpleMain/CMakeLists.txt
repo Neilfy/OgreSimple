@@ -51,6 +51,10 @@ set (SOURCE_FILES
 	src/ImageLoader/jpeg/jutils.c
 	src/ImageLoader/CPictureLoader.cpp
 	src/ImageLoader/CJPGLoader.cpp
+	src/tinyXML/tinystr.cpp
+	src/tinyXML/tinyxml.cpp
+	src/tinyXML/tinyxmlerror.cpp
+	src/tinyXML/tinyxmlparser.cpp
   src/Camera.cpp
   src/Color.cpp
   src/NMath.cpp
@@ -75,6 +79,7 @@ set (SOURCE_FILES
   src/Mesh.cpp
   src/MeshManager.cpp
   src/SubMesh.cpp
+  src/SceneFileLoader.cpp
 )
 if(WIN32)
 set (SOURCE_FILES_EX
@@ -91,6 +96,7 @@ include_directories(
   include/thread/
   include/ModelLoader/
   include/ImageLoader/
+  include/tinyXML/
 )
 
 add_library( OgreMain SHARED ${SOURCE_FILES} ${SOURCE_FILES_EX} )

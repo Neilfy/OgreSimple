@@ -29,11 +29,6 @@ namespace OgreSimple
 		if (it != mTextures.end())
 		{
 			Texture* tex = it->second;
-			if(!tex->IsLoaded())
-            {
-                tex->LoadFile(picName);
-            }
-
 			if(!tex->IsCreated())
 			{
 				tex->Create();
@@ -54,7 +49,7 @@ namespace OgreSimple
 
                 Texture *tex = CreateTexture();
 
-                //tex->LoadFile(picName);
+                tex->LoadFile(picName);
 
                 mTextures.insert(make_pair(picName, tex));
         }

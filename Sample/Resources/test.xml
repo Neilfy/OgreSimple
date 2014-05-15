@@ -1,0 +1,17 @@
+<Nodes>
+	
+	<Node name = "2" >
+		<Mesh>F-35_Lightning_II/F-35_Lightning_II.obj</Mesh>
+		<Position>0,0,0</Position>
+		<Scale>1,1,1</Scale>
+		
+	</Node>
+	
+	<Node name = "1" >
+		<Mesh>F-35_Lightning_II/F-35_Lightning_II.obj</Mesh>
+		<Position>10,10,-10</Position>
+		<Scale>1,1,1</Scale>
+		
+	</Node>
+	
+</Nodes>

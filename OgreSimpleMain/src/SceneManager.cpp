@@ -6,6 +6,7 @@
 #include "MovableObject.h"
 #include "ResourcesLoaderThread.h"
 #include "VirtualObject.h"
+#include "SceneFileLoader.h"
 namespace OgreSimple
 {
     SceneManager::SceneManager()
@@ -77,9 +78,14 @@ namespace OgreSimple
     {
         //TODO
         //temp source code for testing Resource loader thread.
-        ResourceInfo task_info = {"F-35_Lightning_II/F-35_Lightning_II.obj", "F-35_Lightning_II/F-35_Lightning_II.obj", Vector3(0,0,10)};
+        //ResourceInfo task_info = {"F-35_Lightning_II/F-35_Lightning_II.obj", "F-35_Lightning_II/F-35_Lightning_II.obj", Vector3(0,0,10)};
         //ResourceInfo task_info = {"tmp/tmp.obj", "tmp/tmp.obj", Vector3(0,0,10)};
-        mThread->addTask(task_info);
+        //mThread->addTask(task_info);
+        std::string base_path = OgreSimpleRoot::getSingleton()->getResourcePath();
+
+		base_path += "/test.xml";
+        SceneFileLoader loader(mThread);
+        loader.loadFile(base_path);
 
     }
 
