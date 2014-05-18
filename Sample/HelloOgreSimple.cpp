@@ -23,7 +23,7 @@ void init ( void )
     OgreSimple::SceneManager* scene = gRoot->createSceneManager();
     scene->LoadSceneFile();
     gCamera = gRoot->createCamera();
-    gCamera->SetPosition(OgreSimple::Vector3(0, 0, 3));
+    gCamera->SetPosition(OgreSimple::Vector3(0, 1.6, 3));
     gCamera->SetLookAt(OgreSimple::Vector3(0, 0, 0));
     //cam->SetUp(OgreSimple::Vector3(0, 1, 0));
 }

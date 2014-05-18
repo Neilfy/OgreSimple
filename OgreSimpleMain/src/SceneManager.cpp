@@ -59,14 +59,20 @@ namespace OgreSimple
 
     MovableObject* SceneManager::CreateObject(ResourceInfo objInfo)
     {
-        //MovableObject *obj = new MovableObject();
-        //obj->Make();
-        VirtualObject *obj = new VirtualObject(objInfo.name);
-        obj->Make();
-		obj->setPosition(objInfo.pos);
-		Vector3 scale(2, 2, 2);
-		obj->setScale(scale);
-        return obj;
+        MovableObject *obj = NULL;
+		if(objInfo.type == 1)
+		{
+			//obj = new VirtualObject(objInfo.name);
+			//((VirtualObject*)obj)->setMeshFile(objInfo.path);
+			//obj->Make();
+			//obj->setPosition(objInfo.pos);
+		}else if(objInfo.type == 2)
+		{
+			obj = new MovableObject();
+			obj->Make();
+			obj->setPosition(objInfo.pos);
+		}
+		return obj;
     }
 
     void SceneManager::AttachObject(MovableObject* obj)

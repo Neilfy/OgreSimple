@@ -12,7 +12,10 @@ namespace OgreSimple
     {
         std::string name;
         std::string path;
-        Vector3 pos;
+        unsigned char type;//1 model 2 box...
+		Vector3 size;
+		std::string texture;
+		Vector3 pos;
     };
 
     class SceneManager;

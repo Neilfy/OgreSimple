@@ -192,16 +192,11 @@ namespace OgreSimple
 		{
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		}
-glFlush();
+//glFlush();
     }
 
     void GLRenderSystem::setTextureUnit(TextureUnit* texUnit)
     {
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClearDepth(1.0f);
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		GLTexture* tex = (GLTexture*)texUnit->GetTexture();
 		if (tex)
 		{

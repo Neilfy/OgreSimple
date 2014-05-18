@@ -25,6 +25,14 @@ namespace OgreSimple
 		return mSingleton;
 	}
 
+	void MaterialManager::initialise()
+	{
+	    Material * default_mat = create("BaseWhite");
+	    Technique* tec = default_mat->createTechnique();
+	    tec->SetColorEnabled(true);
+	    tec->SetObjectColor(Color::White);
+	}
+
 	Material* MaterialManager::create(const std::string& name)
 	{
         std::map<std::string, Material*>::iterator it = mMaterials.find(name);

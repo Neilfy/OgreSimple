@@ -13,6 +13,8 @@ namespace OgreSimple
         ~MaterialManager();
         static MaterialManager* getSingleton();
 
+        void initialise();
+
         Material* create(const std::string& name);
         Material* GetByName(const std::string& name);
     private:

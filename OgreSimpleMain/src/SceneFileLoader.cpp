@@ -14,6 +14,12 @@ namespace OgreSimple
 		NODE info;
 		TiXmlElement* subNode=0;
 		info.name = Node->Attribute("name");
+		string type = Node->Attribute("type");
+		if(type == "model")
+			info.type = 1;
+		else if(type == "box")
+			info.type = 2;
+
 		for( subNode = Node->FirstChildElement(); subNode; subNode = subNode->NextSiblingElement() )
 		{
 			val = subNode->Value();
@@ -42,11 +48,27 @@ namespace OgreSimple
 				info.scale.z = parseFloat(vecOut[2]);
 			}
 
+			if (val == "size")
+			{
+				string pos = subNode->FirstChild()->Value();
+				vector<string> vecOut;
+				splitString(pos, ",", vecOut);
+				info.size.x = parseFloat(vecOut[0]);
+				info.size.y = parseFloat(vecOut[1]);
+				info.size.z = parseFloat(vecOut[2]);
+			}
+
+			if (val == "texture")
+			{
+				info.texture = subNode->FirstChild()->Value();
+			}
+
 			if (val == "Nodes")
 			{
 				readNodes(subNode,info.nodes);
 			}
 		}
+
 		container.push_back(info);
 	}
 	void SceneFileLoader::readNodes(TiXmlElement* Nodes, vector<NODE>& container )
@@ -97,15 +119,16 @@ namespace OgreSimple
 		it_end = nodes.end();
 		for (it=nodes.begin(); it != it_end; ++it)
 		{
-			Vector3 pos(it->position.x,it->position.y,it->position.z);
 			ResourceInfo task_info = {
                 it->name,
                 it->mesh,
-                pos
+				it->type,
+				it->size,
+				it->texture,
+				it->position
 			};
 
 			mThread->addTask(task_info);
-			//创建子节点
 			if(it->nodes.size() != 0)
 			{
 				createEntitys(it->nodes);

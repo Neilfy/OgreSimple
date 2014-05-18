@@ -15,11 +15,17 @@ namespace OgreSimple
 
     void VirtualObject::Make()
     {
-        mMesh = MeshManager::getSingleton()->load(mName);
+        mMesh = MeshManager::getSingleton()->load(mMeshFile);
     }
 
     void VirtualObject::render(RenderSystem* renderer)
     {
         MovableObject::render(renderer);
     }
+
+
+	void VirtualObject::setMeshFile(std::string& path)
+	{
+		mMeshFile = path;
+	}
 }

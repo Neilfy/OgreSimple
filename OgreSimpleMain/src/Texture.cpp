@@ -48,12 +48,10 @@ namespace OgreSimple
             mWidth = loader->GetImageWidth();
             mHeight = loader->GetImageHeight();
             mPixelType = PT_RGB;
-
+            mIsLoaded = true;
 			delete loader;
 		}
 
-        //CreateTextureImpl();
-	mIsLoaded = true;
     }
 
     void Texture::Create()

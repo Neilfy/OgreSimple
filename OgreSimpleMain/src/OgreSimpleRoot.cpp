@@ -73,7 +73,7 @@ namespace OgreSimple
 
     void OgreSimpleRoot::initialise()
     {
-
+        mMatManager->initialise();
     }
 
     void OgreSimpleRoot::setRenderSystem(RenderSystem* system)

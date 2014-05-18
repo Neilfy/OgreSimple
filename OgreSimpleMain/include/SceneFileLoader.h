@@ -16,7 +16,10 @@ namespace OgreSimple
 		struct NODE
 		{
 			string name;
+			unsigned char type;
 			string mesh;
+			string texture;
+			Vector3 size;
 			Vector3 position;
 			Vector3 scale;
 			vector<NODE> nodes;

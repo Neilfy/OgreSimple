@@ -23,7 +23,8 @@ namespace OgreSimple
         if(mSceneManger)
         {
             MovableObject *obj = mSceneManger->CreateObject(task_info);
-            mSceneManger->AttachObject(obj);
+			if(obj)
+				mSceneManger->AttachObject(obj);
         }
         mTasks.pop();
     }

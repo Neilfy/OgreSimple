@@ -14,8 +14,10 @@ namespace OgreSimple
 
         virtual void Make();
         virtual void render(RenderSystem* renderer);
+		void setMeshFile(std::string& path);
     private:
         std::string mName;
+		std::string mMeshFile;
     };
 }
 #endif
