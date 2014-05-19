@@ -8,6 +8,8 @@
 
 OgreSimple::OgreSimpleRoot *gRoot = NULL;
 OgreSimple::Camera * gCamera = NULL;
+OgreSimple::Vector3 gPosition(0,1.5,0);
+OgreSimple::Vector3 gAtPosition(0,1.5,-3);
 
 void init ( void )
 {
@@ -23,8 +25,8 @@ void init ( void )
     OgreSimple::SceneManager* scene = gRoot->createSceneManager();
     scene->LoadSceneFile();
     gCamera = gRoot->createCamera();
-    gCamera->SetPosition(OgreSimple::Vector3(0, 1.6, 3));
-    gCamera->SetLookAt(OgreSimple::Vector3(0, 0, 0));
+    gCamera->SetPosition(OgreSimple::Vector3(0, 1.5, 0));
+    gCamera->SetLookAt(OgreSimple::Vector3(0, 1.6, -3));
     //cam->SetUp(OgreSimple::Vector3(0, 1, 0));
 }
 
@@ -46,10 +48,10 @@ void keyboard ( unsigned char key, int x, int y)
      switch (key)
      {
      case 'w':
-        gCamera->Walk(1);
+        gCamera->Walk(0.1);
         break;
      case 's':
-        gCamera->Walk(-1);
+        gCamera->Walk(-0.1);
 	break;
      case 'a':
         gCamera->Yaw(0.1);
@@ -58,15 +60,23 @@ void keyboard ( unsigned char key, int x, int y)
         gCamera->Yaw(-0.1);
 	break;
      case 'e':
-        gCamera->Fly(1);
+        gCamera->Pitch(0.1);
 	break;
      case 'q':
-        gCamera->Fly(-1);
+        gCamera->Pitch(-0.1);
+        break;
+     case VK_SPACE:
+        gCamera->Fly(0.1);
         break;
      case 27:
         exit ( 0 );
         break;
      }
+}
+
+void MouseEventCall(int button,int state,int x,int y)
+{
+
 }
 
 
@@ -89,7 +99,8 @@ int main(int argc, char** argv)
 
      glutReshapeFunc ( reshape );
 
-    glutKeyboardFunc ( keyboard );
+     glutKeyboardFunc ( keyboard );
+	 glutMouseFunc (MouseEventCall);
 
      glutMainLoop( );
      return 0;

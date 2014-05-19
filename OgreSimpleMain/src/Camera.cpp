@@ -6,9 +6,9 @@ namespace OgreSimple
         : mPosition(0, 1, 0)
         , mAt(0, -1, 0)
         , mUp(1, 0, 0)
-        , mNear(0.1f)
-        , mFar(100)
-        , mFovy(ME_PI * 0.5f)
+        , mNear(0.01f)
+        , mFar(1000)
+        , mFovy(HALF_PI)
         , mViewport(0, 0, 1, 1)
         , mFrustum()
         , mViewportResized(false)
@@ -48,6 +48,7 @@ namespace OgreSimple
         {
             aspect = static_cast<float>(mViewport.GetWidth()) / mViewport.GetHeight();
         }
+		mMatProjDirty = false;
         mMatPrj = Matrix4::PerspectiveRH(mFovy, aspect, mNear, mFar);
         }
 
@@ -58,9 +59,11 @@ namespace OgreSimple
     {
         if (mMatViewDirty)
         {
+			mMatViewDirty = false;
+
             float pr = - _position().Dot(_axisX());
             float pu = - _position().Dot(_axisY());
-            float pd = - _position().Dot(- _axisZ());// opengl z反向
+            float pd = - _position().Dot(-_axisZ());// opengl z反向
             mMatrixBase._14 = pr;
             mMatrixBase._24 = pu;
             mMatrixBase._34 = pd;
@@ -79,7 +82,7 @@ namespace OgreSimple
 
     void Camera::SetLookAt(const Vector3& atPos)
     {
-		_axisZ() = atPos - _position();
+		_axisZ() = _position() - atPos;
 		_axisZ().Normalize();
 
 		_axisX() = _axisZ().Cross(Vector3(0, 1, 0));
@@ -119,14 +122,14 @@ namespace OgreSimple
         mMatProjDirty = true;
     }
 
-    void Camera::Walk(int units)
+    void Camera::Walk(float units)
     {
         _position() += _axisZ() * units;
 
 		mMatViewDirty = true;
     }
 
-    void Camera::Strafe(int units)
+    void Camera::Strafe(float units)
     {
 	 _position() += _axisX() * units;
 	 mMatViewDirty = true;
@@ -144,7 +147,7 @@ namespace OgreSimple
         mMatrixBase = mMatrixBase * rota;
         mMatViewDirty = true;
     }
-    void Camera::Fly( int units )
+    void Camera::Fly( float units )
     {
 	_position() += Vector3(0, 1, 0) * units;
         mMatViewDirty = true;
