@@ -6,9 +6,9 @@ namespace OgreSimple
         : mPosition(0, 1, 0)
         , mAt(0, -1, 0)
         , mUp(1, 0, 0)
-        , mNear(0.01f)
-        , mFar(1000)
-        , mFovy(HALF_PI)
+        , mNear(0.1f)
+        , mFar(100)
+        , mFovy(MATH_PI/3.f)
         , mViewport(0, 0, 1, 1)
         , mFrustum()
         , mViewportResized(false)
@@ -64,11 +64,11 @@ namespace OgreSimple
             float pr = - _position().Dot(_axisX());
             float pu = - _position().Dot(_axisY());
             float pd = - _position().Dot(-_axisZ());// opengl z·´Ïò
-            mMatrixBase._14 = pr;
-            mMatrixBase._24 = pu;
-            mMatrixBase._34 = pd;
-            mMatrixBase._44 = 1.0f;
-            mMatView = mMatrixBase;
+
+            mMatView._11 = _axisX().x; mMatView._12 = _axisX().y; mMatView._13 = _axisX().z; mMatView._14 = pr;
+            mMatView._21 = _axisY().x; mMatView._22 = _axisY().y; mMatView._23 = _axisY().z; mMatView._24 = pu;
+            mMatView._31 = _axisZ().x; mMatView._32 = _axisZ().y; mMatView._33 = _axisZ().z; mMatView._34 = pd;
+            mMatView._41 = 0;         mMatView._42 = 0;         mMatView._43 = 0;          mMatView._44 = 1.0f;
         }
 
         return mMatView;
@@ -85,10 +85,11 @@ namespace OgreSimple
 		_axisZ() = _position() - atPos;
 		_axisZ().Normalize();
 
-		_axisX() = _axisZ().Cross(Vector3(0, 1, 0));
+		Vector3 up(0, 1, 0);
+		_axisX() = up.Cross(_axisZ());
 		_axisX().Normalize();
 
-		_axisY() = _axisX().Cross(_axisZ());
+		_axisY() = _axisZ().Cross(_axisX());
 		mMatViewDirty = true;
     }
 
@@ -125,7 +126,6 @@ namespace OgreSimple
     void Camera::Walk(float units)
     {
         _position() += _axisZ() * units;
-
 		mMatViewDirty = true;
     }
 

@@ -72,7 +72,7 @@ namespace OgreSimple
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		//glDisable(GL_CULL_FACE);
 		//glCullFace(GL_FRONT_AND_BACK);
 	}

@@ -2,6 +2,7 @@
 
 #include "RenderSystem.h"
 #include "MeshManager.h"
+#include <stdio.h>
 namespace OgreSimple
 {
     VirtualObject::VirtualObject(std::string name)
@@ -20,6 +21,7 @@ namespace OgreSimple
 
     void VirtualObject::render(RenderSystem* renderer)
     {
+        printf("====%x\n",renderer);
         MovableObject::render(renderer);
     }
 

@@ -11,6 +11,11 @@ OgreSimple::Camera * gCamera = NULL;
 OgreSimple::Vector3 gPosition(0,1.5,0);
 OgreSimple::Vector3 gAtPosition(0,1.5,-3);
 
+OgreSimple::Vector2 gLastMouse;
+float gDetalX=0;
+float gDetalY=0;
+bool gIsMove=false;
+
 void init ( void )
 {
     gRoot = new OgreSimple::OgreSimpleRoot();
@@ -25,8 +30,8 @@ void init ( void )
     OgreSimple::SceneManager* scene = gRoot->createSceneManager();
     scene->LoadSceneFile();
     gCamera = gRoot->createCamera();
-    gCamera->SetPosition(OgreSimple::Vector3(0, 1.5, 0));
-    gCamera->SetLookAt(OgreSimple::Vector3(0, 1.6, -3));
+    gCamera->SetPosition(OgreSimple::Vector3(0, 1.5, 4));
+    gCamera->SetLookAt(OgreSimple::Vector3(0, 1.6, 5));
     //cam->SetUp(OgreSimple::Vector3(0, 1, 0));
 }
 
@@ -54,18 +59,18 @@ void keyboard ( unsigned char key, int x, int y)
         gCamera->Walk(-0.1);
 	break;
      case 'a':
-        gCamera->Yaw(0.1);
+        gCamera->Strafe(-0.1);
 	break;
      case 'd':
-        gCamera->Yaw(-0.1);
+        gCamera->Strafe(0.1);
 	break;
      case 'e':
-        gCamera->Pitch(0.1);
+        gCamera->Fly(0.1);
 	break;
      case 'q':
-        gCamera->Pitch(-0.1);
+        gCamera->Fly(-0.1);
         break;
-     case VK_SPACE:
+     case GLUT_KEY_PAGE_UP:
         gCamera->Fly(0.1);
         break;
      case 27:
@@ -76,6 +81,40 @@ void keyboard ( unsigned char key, int x, int y)
 
 void MouseEventCall(int button,int state,int x,int y)
 {
+    if ( state==GLUT_DOWN&& button==GLUT_RIGHT_BUTTON )
+    {
+        gLastMouse.x = x;
+        gLastMouse.y = y;
+        gIsMove = true;
+    }else if (state==GLUT_UP && button==GLUT_RIGHT_BUTTON)
+    {
+        gIsMove = false;
+    }
+}
+
+void MouseMoveCall(int x, int y)
+{
+    if(gIsMove)
+    {
+        OgreSimple::Vector2 curMouse(x,y);
+        float units = 0.001;
+        LONG  offx  = curMouse.x - gLastMouse.x;
+        LONG  offy  = curMouse.y - gLastMouse.y;
+
+        float fPercentOfNew = 1.0f / 2;
+        float fPercentOfOld = 1.0f - fPercentOfNew;
+
+        gDetalX = gDetalX * fPercentOfOld + offx * fPercentOfNew;
+        gDetalY = gDetalY * fPercentOfOld + offy * fPercentOfNew;
+
+        // Æ«º½
+        gCamera->Yaw( units * gDetalX );
+
+        // ¸©Ñö
+        gCamera->Pitch( units * gDetalY );
+        gLastMouse = curMouse;
+    }
+
 
 }
 
@@ -100,7 +139,9 @@ int main(int argc, char** argv)
      glutReshapeFunc ( reshape );
 
      glutKeyboardFunc ( keyboard );
+     glutMotionFunc (MouseMoveCall);
 	 glutMouseFunc (MouseEventCall);
+
 
      glutMainLoop( );
      return 0;

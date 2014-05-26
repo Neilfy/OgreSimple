@@ -74,6 +74,7 @@ set (SOURCE_FILES
   src/TextureManager.cpp
   src/thread/ResourcesLoaderThread.cpp
   src/thread/ThreadBase.cpp
+  src/thread/MapSyncObj.cpp
   src/VirtualObject.cpp
   src/ModelLoader/OBJLoader.cpp
   src/Mesh.cpp

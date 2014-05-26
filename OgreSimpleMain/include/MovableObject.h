@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "NMath.h"
-
+#include <string>
 namespace OgreSimple
 {
     class RenderSystem;
@@ -20,6 +20,7 @@ namespace OgreSimple
         virtual void setPosition(Vector3& pos);
         virtual void setScale(Vector3& scale);
         virtual Matrix4& getTransform();
+        void createMaterialWithTexture(std::string texName);
     protected:
         Mesh* mMesh;
         Vector3 mPosition;

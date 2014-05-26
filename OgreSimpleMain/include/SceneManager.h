@@ -4,6 +4,7 @@
 #include "platform_thread.h"
 #include <string>
 #include <vector>
+#include "MapSyncObj.h"
 namespace OgreSimple
 {
     class RenderSystem;
@@ -11,7 +12,7 @@ namespace OgreSimple
     class Camera;
     class MovableObject;
     class ResourcesLoaderThread;
-    struct ResourceInfo; 
+    struct ResourceInfo;
     class SceneManager
     {
     public:
@@ -35,6 +36,7 @@ namespace OgreSimple
         void LoadSceneFile(/*file name*/);
     private:
         ResourcesLoaderThread* mThread;
+        MapSyncObj mLocker;
     };
 }
 #endif
