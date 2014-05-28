@@ -42,14 +42,10 @@ namespace OgreSimple
 
         mLocker.SyncStart();
         std::vector<MovableObject*>::iterator iter;
-        uint32 pid = GetCurrentThreadId();
-        printf("=====queue size==%d\n",mQueue.size());
         for(iter = mQueue.begin(); iter != mQueue.end(); ++iter)
         {
             MovableObject *obj = *iter;
-            printf("*****star render***%x \n", obj);
             obj->render(mRenderSystem);
-            printf("*****end render***%x \n", obj);
         }
         mLocker.SyncEnd();
 
@@ -72,14 +68,13 @@ namespace OgreSimple
 			((VirtualObject*)obj)->setMeshFile(objInfo.path);
 			obj->Make();
 			obj->setPosition(objInfo.pos);
+			obj->setScale(objInfo.scale);
 		}else if(objInfo.type == 2)
 		{
 			obj = new MovableObject();
 			obj->Make();
 			obj->setPosition(objInfo.pos);
 		}
-		uint32 pid = GetCurrentThreadId();
-		printf("======return obj pid:%d,obj:%x\n", pid,obj);
 		return obj;
     }
 
@@ -87,8 +82,6 @@ namespace OgreSimple
     {
         mLocker.SyncStart();
         mQueue.push_back(obj);
-        uint32 pid = GetCurrentThreadId();
-        printf("======add obj pid:%d,obj:%x,queue obj:%x\n", pid,obj,mQueue[mQueue.size()-1]);
         mLocker.SyncEnd();
     }
 

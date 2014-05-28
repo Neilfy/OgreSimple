@@ -30,8 +30,8 @@ void init ( void )
     OgreSimple::SceneManager* scene = gRoot->createSceneManager();
     scene->LoadSceneFile();
     gCamera = gRoot->createCamera();
-    gCamera->SetPosition(OgreSimple::Vector3(0, 1.5, 4));
-    gCamera->SetLookAt(OgreSimple::Vector3(0, 1.6, 5));
+    gCamera->SetPosition(OgreSimple::Vector3(0, 1.5, 0));
+    gCamera->SetLookAt(OgreSimple::Vector3(0, 1.5, 1));
     //cam->SetUp(OgreSimple::Vector3(0, 1, 0));
 }
 
@@ -57,18 +57,18 @@ void keyboard ( unsigned char key, int x, int y)
         break;
      case 's':
         gCamera->Walk(-0.1);
-	break;
+		break;
      case 'a':
-        gCamera->Strafe(-0.1);
-	break;
-     case 'd':
         gCamera->Strafe(0.1);
 	break;
+     case 'd':
+        gCamera->Strafe(-0.1);
+		break;
      case 'e':
-        gCamera->Fly(0.1);
+        gCamera->Pitch(0.1);
 	break;
      case 'q':
-        gCamera->Fly(-0.1);
+        gCamera->Pitch(-0.1);
         break;
      case GLUT_KEY_PAGE_UP:
         gCamera->Fly(0.1);
@@ -89,6 +89,8 @@ void MouseEventCall(int button,int state,int x,int y)
     }else if (state==GLUT_UP && button==GLUT_RIGHT_BUTTON)
     {
         gIsMove = false;
+		gDetalX = 0;
+		gDetalY = 0;
     }
 }
 
@@ -98,15 +100,15 @@ void MouseMoveCall(int x, int y)
     {
         OgreSimple::Vector2 curMouse(x,y);
         float units = 0.001;
-        LONG  offx  = curMouse.x - gLastMouse.x;
-        LONG  offy  = curMouse.y - gLastMouse.y;
+        int offx  = curMouse.x - gLastMouse.x;
+        int  offy  = curMouse.y - gLastMouse.y;
 
         float fPercentOfNew = 1.0f / 2;
         float fPercentOfOld = 1.0f - fPercentOfNew;
 
         gDetalX = gDetalX * fPercentOfOld + offx * fPercentOfNew;
         gDetalY = gDetalY * fPercentOfOld + offy * fPercentOfNew;
-
+		
         // Æ«º½
         gCamera->Yaw( units * gDetalX );
 

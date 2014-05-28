@@ -43,21 +43,12 @@ namespace OgreSimple {
                 if(!materials.texName.empty())
                 {
                     std::string tex_dir = "Models/";
-                    std::string ext;
-
-					size_t pos = materials.texName.find_last_of(".");
-					ext = materials.texName.substr(pos+1);
-					std::transform(ext.begin(),ext.end(),ext.begin(),::tolower);
-
-					pos = m_Name.find_last_of("/");
+					size_t pos = m_Name.find_last_of("/");
                     tex_dir += m_Name.substr(0, pos+1);
 					
-					if(ext == "jpg")
-					{
-						TextureUnit* texUnit = tec->CreateTextureUnit();
-						texUnit->SetPicName(tex_dir + materials.texName);
-						texUnit->LoadTexture();
-					}
+					TextureUnit* texUnit = tec->CreateTextureUnit();
+					texUnit->SetPicName(tex_dir + materials.texName);
+					texUnit->LoadTexture();
                 }
 
 			}
@@ -97,9 +88,8 @@ namespace OgreSimple {
                                                 vecVertex.push_back(tmp.x);
                                                 vecVertex.push_back(tmp.y);
                                                 vecVertex.push_back(tmp.z);
-
                                         }
-					if (tri_it->tIdx.size())
+										if (tri_it->tIdx.size())
                                         {
                                                 tmp = model->texcoords[tri_it->tIdx[i]-1];
                                                 vecVertex.push_back(tmp.x);

@@ -16,6 +16,7 @@ namespace OgreSimple
 		Vector3 size;
 		std::string texture;
 		Vector3 pos;
+		Vector3 scale;
     };
 
     class SceneManager;

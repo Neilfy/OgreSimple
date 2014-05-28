@@ -15,6 +15,7 @@ namespace OgreSimple
 		, mSrcBlendFactor(BFT_SRC_ALPHA)
         , mDstBlendFactor(BFT_ONE_MINUS_SRC_ALPHA)
 		, mTextureUnit(NULL)
+		, mGpuProgram(NULL)
 		, mTextureEnabled(false)
 	{
 	}
@@ -34,6 +35,15 @@ namespace OgreSimple
             mTextureUnit = new TextureUnit();
         }
         return mTextureUnit;
+	}
+
+	GpuProgram* Technique::CreateGpuProgram(void)
+	{
+		if(!mGpuProgram)
+		{
+			mGpuProgram = new GpuProgram();
+		}
+		return mGpuProgram;
 	}
 
 }

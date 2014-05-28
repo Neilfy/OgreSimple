@@ -125,7 +125,8 @@ namespace OgreSimple
 				it->type,
 				it->size,
 				it->texture,
-				it->position
+				it->position,
+				it->scale
 			};
 
 			mThread->addTask(task_info);

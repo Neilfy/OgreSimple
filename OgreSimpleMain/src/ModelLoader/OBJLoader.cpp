@@ -134,13 +134,13 @@ namespace OgreSimple
 					/* v/t */
 					sscanf(str1, "%d/%d", &v, &t);
 					tri.vIdx.push_back(v);
-					tri.nIdx.push_back(t);
+					tri.tIdx.push_back(t);
 					sscanf(str2, "%d/%d", &v, &t);
 					tri.vIdx.push_back(v);
-					tri.nIdx.push_back(t);
+					tri.tIdx.push_back(t);
 					sscanf(str3, "%d/%d", &v, &t);
 					tri.vIdx.push_back(v);
-					tri.nIdx.push_back(t);
+					tri.tIdx.push_back(t);
 					group->triangles.push_back(tri);
 
 				} else {

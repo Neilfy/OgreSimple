@@ -21,7 +21,6 @@ namespace OgreSimple
 
     void VirtualObject::render(RenderSystem* renderer)
     {
-        printf("====%x\n",renderer);
         MovableObject::render(renderer);
     }
 

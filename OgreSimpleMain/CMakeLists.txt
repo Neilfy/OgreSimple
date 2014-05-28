@@ -51,6 +51,7 @@ set (SOURCE_FILES
 	src/ImageLoader/jpeg/jutils.c
 	src/ImageLoader/CPictureLoader.cpp
 	src/ImageLoader/CJPGLoader.cpp
+	src/ImageLoader/CTGALoader.cpp
 	src/tinyXML/tinystr.cpp
 	src/tinyXML/tinyxml.cpp
 	src/tinyXML/tinyxmlerror.cpp
@@ -81,6 +82,8 @@ set (SOURCE_FILES
   src/MeshManager.cpp
   src/SubMesh.cpp
   src/SceneFileLoader.cpp
+  src/Shader.cpp
+  src/GpuProgram.cpp
 )
 if(WIN32)
 set (SOURCE_FILES_EX

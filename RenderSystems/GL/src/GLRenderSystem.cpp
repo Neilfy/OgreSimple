@@ -7,6 +7,9 @@
 #include "GLTextureManager.h"
 #include "Material.h"
 #include "GLTexture.h"
+#include <stdio.h>
+#include <map>
+using std::map;
 namespace OgreSimple
 {
     GLRenderSystem::GLRenderSystem(void)
@@ -211,6 +214,14 @@ namespace OgreSimple
     void GLRenderSystem::setMaterial(Material* mat)
     {
         Technique* tech = mat->getBestTechnique();
+		if(tech->IsProgrammable())
+		{
+			mGpuProgram = tech->GetGpuProgram();
+
+			if (!ActiveProgram(mGpuProgram))
+			{
+			}
+		}
         // set lighting material
 		if (tech->IsLightingEnabled())
 		{
@@ -277,5 +288,273 @@ namespace OgreSimple
 			glDisable(GL_TEXTURE_2D);
 		}
 	}
+
+	void GLRenderSystem::DeleteShader(uint32 shader)
+	{
+		if (glIsShader(shader))
+		{
+			glDeleteShader(shader);
+		}
+	}
+
+	void GLRenderSystem::DeleteProgram(uint32 program)
+	{
+		if (glIsProgram(program))
+		{
+			glDeleteProgram(program);
+		}
+	}
+
+	bool GLRenderSystem::ActiveProgram(GpuProgram* program)
+	{
+		if (0 == program)
+		{
+			return false;
+		}
+
+		if (0 == program->GetProgramObjectHandle())
+		{
+			if (!CompileGpuProgram(program))
+			{
+				return false;
+			}
+		}
+
+		glUseProgram(program->GetProgramObjectHandle());
+		
+		const map<uint32, Shader::Uniform>& userUniforms = program->GetUserUniforms();
+		for (map<uint32, Shader::Uniform>::const_iterator it = userUniforms.begin();
+			it != userUniforms.end(); ++it)
+		{
+			switch (it->second.type)
+			{
+			case Shader::DT_FLOAT:
+				{
+					float v;
+					if (program->GetUserUniform(it->second.name, v))
+					{
+						glUniform1f(it->second.location, v);
+					}
+				}
+				break;
+
+			case Shader::DT_VEC2:
+				{
+					Vector2 v;
+					if (program->GetUserUniform(it->second.name, v))
+					{
+						glUniform2fv(it->second.location, 1, &(v.x));
+					}
+				}
+				break;
+
+			case Shader::DT_VEC3:
+				{
+					Vector3 v;
+					if (program->GetUserUniform(it->second.name, v))
+					{
+						 glUniform3fv(it->second.location, 1, &(v.x));
+					}
+				}
+				break;
+
+			case Shader::DT_VEC4:
+				{
+					Vector4 v;
+					if (program->GetUserUniform(it->second.name, v))
+					{
+						glUniform4fv(it->second.location, 1, &(v.x));
+					}
+				}
+				break;
+
+			case Shader::DT_MAT4:
+				{
+					Matrix4 v;
+					if (program->GetUserUniform(it->second.name, v))
+					{
+						glUniformMatrix4fv(it->second.location, 1, GL_FALSE, v.GetTranspose().GetRawPointer());
+					}
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		return true;
+	}
+
+	bool GLRenderSystem::CompileGpuProgram(GpuProgram* program)
+    {
+        if (0 == program)
+        {
+            return false;
+        }
+
+        Shader* vs = program->GetVertexShader();
+        Shader* fs = program->GetFragmentShader();
+
+		if (0 == vs || 0 == fs)
+		{
+			return false;
+		}
+
+        // get vertex shader handle
+        uint32 vsHandle = vs->GetShaderObjectHandle();
+//        OutputDebugLog("K: RendererGLES2::CompileGpuProgram, 0x%X, handle %d", vs.get(), vsHandle);
+        if (0 == vsHandle)
+        {
+            if (0 == (vsHandle = CompileShader(vs)))
+            {
+                return false;
+            }
+        }
+
+        // get fragment shader handle
+        uint32 fsHandle = fs->GetShaderObjectHandle();
+        if (0 == fsHandle)
+        {
+            if (0 == (fsHandle = CompileShader(fs)))
+            {
+                return false;
+            }
+        }
+
+		// create program
+		uint32 programHandle = glCreateProgram();
+		if (0 == programHandle)
+		{
+			return false;
+		}
+
+		// attach
+		glAttachShader(programHandle, vsHandle);
+		glAttachShader(programHandle, fsHandle);
+
+		// bind attributes
+		uint32 attr_index = 0;
+		const Shader::AttributeList& attributes = vs->GetAttributes();
+		for (Shader::AttributeList::const_iterator it = attributes.begin();
+			it != attributes.end();
+			++it)
+		{
+			if (program->GetAttributeIndex(it->first, attr_index))
+			{
+				glBindAttribLocation(programHandle, attr_index, it->second.name.c_str());
+			}
+		}
+
+		// link
+		glLinkProgram(programHandle);
+
+		GLint linked = 0;
+		glGetProgramiv(programHandle, GL_LINK_STATUS, &linked);
+		if (0 == linked)
+		{
+			glDeleteProgram(programHandle);
+
+			return false;
+		}
+
+		// get uniforms
+		int uniform_location = -1;
+		// uniforms of vertex shader
+		const Shader::UniformList& vs_uniforms = vs->GetUniforms();
+		for (Shader::UniformList::const_iterator it = vs_uniforms.begin();
+			it != vs_uniforms.end();
+			++it)
+		{
+			uniform_location = glGetUniformLocation(programHandle, it->second.name.c_str());
+			program->AddUniform(it->first, Shader::Uniform(it->second.type, it->second.name, uniform_location));
+		}
+		// uniforms of fragment shader
+		const Shader::UniformList& fs_uniforms = fs->GetUniforms();
+		for (Shader::UniformList::const_iterator it = fs_uniforms.begin();
+			it != fs_uniforms.end();
+			++it)
+		{
+			uniform_location = glGetUniformLocation(programHandle, it->second.name.c_str());
+			program->AddUniform(it->first, Shader::Uniform(it->second.type, it->second.name, uniform_location));
+		}
+
+		// user uniforms
+		// uniforms of vertex shader
+		const Shader::UniformList& vs_u_uniforms = vs->GetUserUniforms();
+		uint32 user_unforms_index = 0;
+		for (Shader::UniformList::const_iterator it = vs_u_uniforms.begin();
+			it != vs_u_uniforms.end();
+			++it)
+		{
+			uniform_location = glGetUniformLocation(programHandle, it->second.name.c_str());
+			program->AddUserUniform(user_unforms_index++, Shader::Uniform(it->second.type, it->second.name, uniform_location));
+		}
+		// uniforms of fragment shader
+		const Shader::UniformList& fs_u_uniforms = fs->GetUserUniforms();
+		for (Shader::UniformList::const_iterator it = fs_u_uniforms.begin();
+			it != fs_u_uniforms.end();
+			++it)
+		{
+			uniform_location = glGetUniformLocation(programHandle, it->second.name.c_str());
+			program->AddUserUniform(user_unforms_index++, Shader::Uniform(it->second.type, it->second.name, uniform_location));
+		}
+
+        program->SetProgramObjectHandle(programHandle);
+        program->SetRenderer(this);
+
+		return true;
+    }
+
+	uint32 GLRenderSystem::CompileShader(Shader* shader)
+    {
+        if (0 == shader)
+        {
+            return false;
+        }
+
+        GLenum shaderType = GL_VERTEX_SHADER;
+        switch (shader->GetShaderType())
+        {
+        case Shader::ST_VERTEX:
+            shaderType = GL_VERTEX_SHADER;
+            break;
+
+        case Shader::ST_FRAGMENT:
+            shaderType = GL_FRAGMENT_SHADER;
+            break;
+
+        default:
+            return 0;
+        }
+
+        // create shader object
+		GLuint shaderHandle = glCreateShader(shaderType);
+		if (0 == shaderHandle)
+		{
+			return 0;
+		}
+
+		const char* shader_src = shader->GetSource().c_str();
+		glShaderSource(shaderHandle, 1, &shader_src, NULL);
+		glCompileShader(shaderHandle);
+
+		GLint compiled = 0;
+		glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &compiled);
+		if (0 == compiled)
+		{
+				char info_log[5000];
+				glGetShaderInfoLog(shaderHandle, 5000, NULL, info_log);
+				printf("Error in vertex shader compilation!\n");
+				printf("Info Log: %s\n", info_log);
+			glDeleteShader(shaderHandle);
+			return 0;
+		}
+
+        shader->SetShaderObjectHandle(shaderHandle);
+        shader->SetRenderer(this);
+
+        return shaderHandle;
+    }
 }
 

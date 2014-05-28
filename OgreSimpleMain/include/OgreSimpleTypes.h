@@ -54,6 +54,21 @@ namespace OgreSimple
 		PT_RGB565,
 		PT_ALPHA
 	};
+
+	enum VertexDataFormat
+	{       
+		VDF_XYZ     = 1,
+		VDF_NORMAL  = 2,
+		VDF_DIFFUSE = 4,
+		VDF_UV      = 8
+	};
+
+	enum UniformType
+	{           
+		UT_MVPMatrix = 0,
+		UT_TEXTURE0,
+		UT_User = 100
+	};
 }
 
 #endif

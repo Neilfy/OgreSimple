@@ -63,7 +63,7 @@ namespace OgreSimple
 
             float pr = - _position().Dot(_axisX());
             float pu = - _position().Dot(_axisY());
-            float pd = - _position().Dot(-_axisZ());// opengl z反向
+            float pd = - _position().Dot(_axisZ());// opengl z反向
 
             mMatView._11 = _axisX().x; mMatView._12 = _axisX().y; mMatView._13 = _axisX().z; mMatView._14 = pr;
             mMatView._21 = _axisY().x; mMatView._22 = _axisY().y; mMatView._23 = _axisY().z; mMatView._24 = pu;
@@ -125,26 +125,30 @@ namespace OgreSimple
 
     void Camera::Walk(float units)
     {
-        _position() += _axisZ() * units;
+        //_position() += -_axisZ() * units;
+		_position().x += -_axisZ().x * units;
+		_position().z += -_axisZ().z * units;
 		mMatViewDirty = true;
     }
 
     void Camera::Strafe(float units)
     {
-	 _position() += _axisX() * units;
+	 //_position() += -_axisX() * units;
+	 _position().x += -_axisX().x * units;
+	 _position().z += -_axisX().z * units;
 	 mMatViewDirty = true;
     }
 
     void Camera::Yaw(float angle)
     {
         Matrix4 rota = Matrix4::Rotation(Vector3(0, 1, 0), angle);
-	mMatrixBase = mMatrixBase * rota;
+	mMatrixBase = rota * mMatrixBase ;
 	mMatViewDirty = true;
     }
     void Camera::Pitch( float angle )
     {
         Matrix4 rota = Matrix4::Rotation(_axisX(), angle);
-        mMatrixBase = mMatrixBase * rota;
+        mMatrixBase = rota * mMatrixBase;
         mMatViewDirty = true;
     }
     void Camera::Fly( float units )

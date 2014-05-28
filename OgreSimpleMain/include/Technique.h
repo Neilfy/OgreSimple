@@ -5,6 +5,7 @@
 
 #include "Color.h"
 #include "TextureUnit.h"
+#include "GpuProgram.h"
 
 namespace OgreSimple
 {
@@ -87,7 +88,18 @@ namespace OgreSimple
             mBlendingEnabled = blendingEnabled;
         }
 
+		GpuProgram* GetGpuProgram(void) const
+		{
+			return mGpuProgram;
+		}
+
+		bool IsProgrammable(void) const
+		{
+			return (0 != mGpuProgram);
+		}
+
         TextureUnit* CreateTextureUnit(void);
+		GpuProgram* CreateGpuProgram(void);
 
 	protected:
 		bool	mColorEnabled;
@@ -106,6 +118,7 @@ namespace OgreSimple
 
 		TextureUnit	*mTextureUnit;
 		bool			mTextureEnabled;
+		GpuProgram  *mGpuProgram;
 
 	};
 

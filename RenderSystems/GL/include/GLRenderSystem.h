@@ -2,6 +2,7 @@
 #define GLRENDERSYSTEM_H
 
 #include "RenderSystem.h"
+#include "GpuProgram.h"
 namespace OgreSimple
 {
     class HardwareManager;
@@ -18,6 +19,7 @@ namespace OgreSimple
         Viewport* mViewport;
 		Matrix4 mWorldMatrix;
 		Matrix4 mViewMatrix;
+		GpuProgram* mGpuProgram;
 
     private:
         void initialiseContext();
@@ -41,6 +43,11 @@ namespace OgreSimple
 
         void enableLighting(bool enable);
         void enableTexture(bool enable);
+		void DeleteShader(uint32 shader);
+		void DeleteProgram(uint32 program);
+		bool ActiveProgram(GpuProgram* program);
+		bool CompileGpuProgram(GpuProgram* program);
+		uint32 CompileShader(Shader* shader);
     };
 }
 

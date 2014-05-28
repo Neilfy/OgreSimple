@@ -1,11 +1,13 @@
 #include "Texture.h"
 #include "string.h"
 #include "ImageLoader/CJPGLoader.h"
+#include "ImageLoader/CTGALoader.h"
 #include "OgreSimpleRoot.h"
 #include <stdio.h>
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 namespace OgreSimple
 {
@@ -38,18 +40,53 @@ namespace OgreSimple
             uint8* stream = new uint8[dwSize];
             fread(stream,1,dwSize,pFile);
             fclose(pFile);
+			size_t pos = picName.find_last_of(".");
+			std::string ext = picName.substr(pos+1);
+			std::transform(ext.begin(),ext.end(),ext.begin(),::tolower);
 
-			CJPGLoader* loader = new CJPGLoader();
-			loader->LoadFromStream(stream,dwSize);
-            int size = loader->GetImageWidth()*loader->GetImageHeight()*3;
-            mTexData = new uint8[size];
-            memcpy(mTexData,(char*)loader->GetDIB24(),size);
+			if(ext == "jpg")
+			{
+				CJPGLoader* loader = new CJPGLoader();
+				loader->LoadFromStream(stream,dwSize);
+				int size = loader->GetImageWidth()*loader->GetImageHeight()*3;
+				mTexData = new uint8[size];
+				memcpy(mTexData,(char*)loader->GetDIB24(),size);
+				mWidth = loader->GetImageWidth();
+				mHeight = loader->GetImageHeight();
+				mPixelType = PT_RGB;
+				mIsLoaded = true;
 
-            mWidth = loader->GetImageWidth();
-            mHeight = loader->GetImageHeight();
-            mPixelType = PT_RGB;
-            mIsLoaded = true;
-			delete loader;
+				delete stream;
+				delete loader;
+			}else if(ext == "tga")
+			{
+				CTGALoader* loader = new CTGALoader();
+				loader->LoadFromStream(stream,dwSize);
+				mWidth = loader->GetImageWidth();
+				mHeight = loader->GetImageHeight();
+
+				int pixsize = loader->GetBPP();
+				int size = 0;
+				if(pixsize == 24)
+				{
+					mPixelType = PT_RGB;
+					size = mWidth * mHeight * 3;
+				}
+				else if(pixsize == 32)
+				{
+					mPixelType = PT_RGBA;
+					size = mWidth * mHeight * 4;
+				}
+				if(size > 0)
+				{
+					mTexData = new uint8[size];
+					memcpy(mTexData,(char*)loader->GetDIB24(),size);
+				}
+				mIsLoaded = true;
+
+				delete stream;
+				delete loader;
+			}
 		}
 
     }

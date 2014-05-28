@@ -1,11 +1,23 @@
 <Nodes>
 	
-	
+	<Node name = "2" type = "model" >
+		<Mesh>desk/comp_desk.obj</Mesh>
+		<Position>0,0.5,-2.7</Position>
+		<Scale>0.01,0.01,0.01</Scale>
+		
+	</Node>
+
+	<Node name = "3" type = "model" >
+		<Mesh>door/door.obj</Mesh>
+		<Position>0,0,5</Position>
+		<Scale>0.005,0.005,0.005</Scale>
+		
+	</Node>
 
 	<Node name = "house" type = "box" >
 		<size>13,10,4</size>
 		<texture>tmp/back.jpg</texture>
-		<Position>0,0,0</Position> 
+		<Position>0,2,0</Position> 
 	</Node>
 	
 	

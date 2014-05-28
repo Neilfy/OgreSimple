@@ -26,6 +26,8 @@ namespace OgreSimple
 		virtual void clearFrameBuffer() = 0;
 
         virtual void setMaterial(Material* mat) = 0;
+		virtual void DeleteShader(uint32 shader) = 0;
+		virtual void DeleteProgram(uint32 program) = 0;
     };
 }
 #endif
