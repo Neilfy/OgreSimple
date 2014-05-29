@@ -220,7 +220,11 @@ namespace OgreSimple
 
 			if (!ActiveProgram(mGpuProgram))
 			{
+				glUseProgram(0);
 			}
+		}else
+		{
+			glUseProgram(0);
 		}
         // set lighting material
 		if (tech->IsLightingEnabled())

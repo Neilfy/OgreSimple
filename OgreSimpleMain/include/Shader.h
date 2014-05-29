@@ -98,6 +98,16 @@ namespace OgreSimple
             mRenderer = renderer;
         }
 
+        void SetShaderType(Shader::ShaderType shaderType)
+        {
+            mType = shaderType;
+        }
+
+        void SetShaderSource(const std::string& content)
+        {
+            mSource = content;
+        }
+
         void ReleaseHandle(void);
 
 	public:
@@ -105,7 +115,7 @@ namespace OgreSimple
 		static bool GetShaderDataType(const std::string& s, DataType& dataType);
 		static bool GetUniformType(const std::string& s, uint32& uniformType);
 
-	public:
+	private:
         uint32      mShaderHandle;    // handle
 		ShaderType	mType;
 

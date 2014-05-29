@@ -8,6 +8,7 @@ namespace OgreSimple
     class SceneManager;
     class MeshManager;
     class MaterialManager;
+    class ShaderManager;
     class RenderSystem;
     class Viewport;
     class Camera;
@@ -22,6 +23,7 @@ namespace OgreSimple
         Viewport mViewport;
         MeshManager* mMeshManager;
         MaterialManager* mMatManager;
+        ShaderManager* mShaderManager;
         std::string m_BasePath;
     protected:
         //typedef std::map<string, MovableObjectFactory*> MovableObjectFactoryMap;

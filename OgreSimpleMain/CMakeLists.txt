@@ -84,6 +84,7 @@ set (SOURCE_FILES
   src/SceneFileLoader.cpp
   src/Shader.cpp
   src/GpuProgram.cpp
+  src/ShaderManager.cpp
 )
 if(WIN32)
 set (SOURCE_FILES_EX

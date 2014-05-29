@@ -12,6 +12,7 @@
 //#include "MovableObject.h"
 #include "MeshManager.h"
 #include "MaterialManager.h"
+#include "ShaderManager.h"
 //#include "Entity.h"
 //#include "Light.h"
 namespace OgreSimple
@@ -28,6 +29,7 @@ namespace OgreSimple
         mMatManager = new MaterialManager();
 
         mMeshManager = new MeshManager();
+        mShaderManager = new ShaderManager();
         //mMatManager = new MaterialManager;
 
         //mEntityFactory = new EntityFactory();
@@ -62,6 +64,11 @@ namespace OgreSimple
 		{
 			delete mMatManager;
 		}
+
+		if(mShaderManager)
+        {
+            delete mShaderManager;
+        }
 
         //delete mMeshManager;
         //delete mMatManager;

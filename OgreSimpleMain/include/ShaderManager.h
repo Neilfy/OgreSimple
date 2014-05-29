@@ -1,39 +1,37 @@
-#ifndef CXX_MAP_SHADERMANAGER_H
-#define CXX_MAP_SHADERMANAGER_H
+#ifndef CXX_SHADERMANAGER_H
+#define CXX_SHADERMANAGER_H
 
-#include <boost/noncopyable.hpp>
 #include <map>
 #include <string>
 
-#include "MapShader.h"
+#include "Shader.h"
 
-namespace ME
+namespace OgreSimple
 {
-    class Renderer;
+    class RendererSystem;
 
-	class ShaderManager : private boost::noncopyable
+	class ShaderManager
 	{
 	public:
 		ShaderManager(void);
 		~ShaderManager(void);
 
 	public:
-		static ShaderManager* Instance(void);
-		static void Destroy(void);
+		static ShaderManager* getSingleton(void);
 
 	public:
-		SpShader GetShader(const std::string& shaderName);
-		void AddShader(const std::string& shaderName, SpShader& shader);
+		Shader* GetShader(const std::string& shaderName);
+		Shader* CreateShader(const std::string& shaderName);
 
-        bool CompileAllShaders(Renderer* renderer);
+        bool CompileAllShaders(RenderSystem* renderer);
         void ReleaseShaders(void);
 
 	protected:
-		std::map<std::string, SpShader>	mShaders;
+		std::map<std::string, Shader*>	mShaders;
 
 	private:
-		static	ShaderManager* msInstance;
+		static	ShaderManager* mSingleton;
 	};
 }
 
-#endif // CXX_MAP_SHADERMANAGER_H
+#endif // CXX_SHADERMANAGER_H

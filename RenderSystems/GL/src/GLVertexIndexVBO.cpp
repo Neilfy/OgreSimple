@@ -87,6 +87,7 @@ namespace OgreSimple
         const GLvoid* pBuffer = indexData->getBuffer();
         glGenBuffersARB(1, &mBufferID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBufferID);
+        unsigned int err = glGetError();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, pBuffer, GL_STATIC_DRAW);
 
         return true;

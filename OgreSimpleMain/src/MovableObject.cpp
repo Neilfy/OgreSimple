@@ -2,41 +2,12 @@
 #include "RenderOperation.h"
 #include "RenderSystem.h"
 #include "MaterialManager.h"
+#include "ShaderManager.h"
 #include "Material.h"
 #include "Mesh.h"
 #include "MeshManager.h"
 #include <algorithm>
 
-#include "Shader.h"
-#include <stdio.h>
-#include <sstream>
-#include <fstream>
-
-OgreSimple::Shader* gShaderVS;
-OgreSimple::Shader* gShaderFS;
-OgreSimple::Shader* LoadShader(const std::string& shaderName, OgreSimple::Shader::ShaderType shaderType)
-{
-    if(shaderType == OgreSimple::Shader::ST_VERTEX)
-    {
-        gShaderVS = new OgreSimple::Shader();
-        gShaderVS->mSource =
-        "void main()\n"
-		"{\n"
-		"gl_FrontColor = gl_Color;\n"
-		"gl_Position = ftransform();\n"
-		"}\n";
-    }else
-    {
-         gShaderVS = new OgreSimple::Shader();
-        gShaderVS->mSource =
-        "void main()\n"
-		"{\n"
-		"gl_FragColor = vec4(1.0, 0, 0, 1.0);\n"
-		"}\n";
-    }
-    gShaderVS->mType = shaderType;
-    return gShaderVS;
-}
 namespace OgreSimple
 {
     MovableObject::MovableObject()
@@ -65,8 +36,10 @@ namespace OgreSimple
 			texUnit->LoadTexture();
 
 			GpuProgram* program = tec->CreateGpuProgram();
-			program->mVertexShader = LoadShader("Shader/simple.vert", Shader::ST_VERTEX);
-			program->mFragmentShader = LoadShader("Shader/simple.frag", Shader::ST_FRAGMENT);
+			Shader* vsShader = ShaderManager::getSingleton()->CreateShader("Basic.vert");
+			program->mVertexShader = vsShader;
+			Shader* fsShader = ShaderManager::getSingleton()->CreateShader("BasicTexture.frag");
+			program->mFragmentShader = fsShader;
 		}
     }
 

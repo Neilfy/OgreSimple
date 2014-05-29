@@ -1,86 +1,95 @@
-#include "MapShaderManager.h"
+#include "ShaderManager.h"
 
 #include <utility>
-#include "MapRenderer.h"
+#include "RenderSystem.h"
 
 using std::map;
 using std::string;
 using std::make_pair;
 
-namespace ME
+namespace OgreSimple
 {
-	ShaderManager* ShaderManager::msInstance = 0;
+    string BASIC_VS =
+    "void main()\n"
+    "{\n"
+    "   gl_FrontColor = gl_Color;\n"
+    "   gl_TexCoord[0] = gl_MultiTexCoord0;\n"
+    "   gl_Position = ftransform();\n"
+    "}\n";
+
+    string BASIC_TEXTURE_FS =
+    "uniform sampler2D Texture0;"
+    "void main()\n"
+    "{\n"
+    "   gl_FragColor = texture2D(Texture0, gl_TexCoord[0].st);"
+    "}\n";
+	ShaderManager* ShaderManager::mSingleton = 0;
 
 	ShaderManager::ShaderManager(void)
 	{
+		mSingleton = this;
 	}
 
 	ShaderManager::~ShaderManager(void)
 	{
-	}
-
-	ShaderManager* ShaderManager::Instance(void)
-	{
-		if (0 == msInstance)
+	    std::map<std::string, Shader*>::iterator it, it_end;
+		it_end = mShaders.end();
+		for ( it = mShaders.begin(); it != it_end; ++it )
 		{
-			msInstance = new ShaderManager();
+			delete it->second;
 		}
-		return msInstance;
+		mShaders.clear();
+		mSingleton = 0;
 	}
 
-	void ShaderManager::Destroy(void)
+	ShaderManager* ShaderManager::getSingleton(void)
 	{
-		if (0 != msInstance)
-		{
-			delete msInstance;
-			msInstance = 0;
-		}
+		return mSingleton;
 	}
 
-	SpShader ShaderManager::GetShader(const string& shaderName)
+	Shader* ShaderManager::GetShader(const string& shaderName)
 	{
-		map<string, SpShader>::iterator it = mShaders.find(shaderName);
+		map<string, Shader*>::iterator it = mShaders.find(shaderName);
 		if (it != mShaders.end())
 		{
 			return it->second;
 		}
 		else
 		{
-			return SpShader(reinterpret_cast<Shader*>(0));
+			return NULL;
 		}
 	}
 
-	void ShaderManager::AddShader(const std::string& shaderName, SpShader& shader)
+	Shader* ShaderManager::CreateShader(const std::string& shaderName)
 	{
+	    map<string, Shader*>::iterator it = mShaders.find(shaderName);
+		if (it != mShaders.end())
+		{
+			return it->second;
+		}
+
+		Shader* shader = new Shader();
+		if(shaderName == "Basic.vert")
+        {
+            shader->SetShaderSource(BASIC_VS);
+            shader->SetShaderType(Shader::ST_VERTEX);
+        }else if(shaderName == "BasicTexture.frag")
+        {
+            shader->SetShaderSource(BASIC_TEXTURE_FS);
+            shader->SetShaderType(Shader::ST_FRAGMENT);
+        }
 		mShaders.insert(make_pair(shaderName, shader));
+		return shader;
 	}
 
-    bool ShaderManager::CompileAllShaders(Renderer* renderer)
+    bool ShaderManager::CompileAllShaders(RenderSystem* renderer)
     {
-        if (NULL == renderer)
-        {
-            return false;
-        }
-
-        bool compiled = true;
-        for (map<string, SpShader>::iterator it = mShaders.begin();
-            it != mShaders.end(); ++it)
-        {
-            if (0 != it->second)
-            {
-                if (0 != renderer->CompileShader(it->second))
-                {
-                    compiled = false;
-                }
-            }
-        }
-
-        return compiled;
+        //TODO
     }
 
     void ShaderManager::ReleaseShaders(void)
     {
-        for (map<string, SpShader>::iterator it = mShaders.begin();
+        for (map<string, Shader*>::iterator it = mShaders.begin();
             it != mShaders.end(); ++it)
         {
             if (0 != it->second)
