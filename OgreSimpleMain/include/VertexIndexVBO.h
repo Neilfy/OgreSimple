@@ -10,8 +10,8 @@ namespace OgreSimple
         VertexVBO(){};
         virtual ~VertexVBO(){};
 
-        virtual bool SetBufferData(const VertexData* vertexData) = 0;
-        virtual bool BindVertexBuffer() = 0;
+        virtual bool UpdateVBO() = 0;
+        virtual bool BindVertexBuffer(const VertexData* vertexData) = 0;
 		virtual bool UnBindVertexBuffer() = 0;
 
     protected:
@@ -24,8 +24,8 @@ namespace OgreSimple
         IndexVBO(){};
         virtual ~IndexVBO(){};
 
-        virtual bool SetBufferData(const IndexData* indexData) = 0;
-        virtual bool BindIndexBuffer() = 0;
+        virtual bool UpdateVBO() = 0;
+        virtual bool BindIndexBuffer(const IndexData* indexData) = 0;
 		virtual bool UnBindIndexBuffer() = 0;
 
     protected:

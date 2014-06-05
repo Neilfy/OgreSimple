@@ -142,13 +142,13 @@ namespace OgreSimple
     void Camera::Yaw(float angle)
     {
         Matrix4 rota = Matrix4::Rotation(Vector3(0, 1, 0), angle);
-	mMatrixBase = rota * mMatrixBase ;
+	mMatrixBase = mMatrixBase * rota ;
 	mMatViewDirty = true;
     }
     void Camera::Pitch( float angle )
     {
         Matrix4 rota = Matrix4::Rotation(_axisX(), angle);
-        mMatrixBase = rota * mMatrixBase;
+        mMatrixBase =  mMatrixBase * rota;
         mMatViewDirty = true;
     }
     void Camera::Fly( float units )

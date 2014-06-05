@@ -1,5 +1,6 @@
 #include "MaterialManager.h"
 #include "Material.h"
+#include "ShaderManager.h"
 namespace OgreSimple
 {
     MaterialManager* MaterialManager::mSingleton = 0;
@@ -31,6 +32,12 @@ namespace OgreSimple
 	    Technique* tec = default_mat->createTechnique();
 	    tec->SetColorEnabled(true);
 	    tec->SetObjectColor(Color::White);
+
+		GpuProgram* program = tec->CreateGpuProgram();
+		Shader* vsShader = ShaderManager::getSingleton()->CreateShader("Basic.vert");
+		program->mVertexShader = vsShader;
+		Shader* fsShader = ShaderManager::getSingleton()->CreateShader("BasicObjectColor.frag");
+		program->mFragmentShader = fsShader;
 	}
 
 	Material* MaterialManager::create(const std::string& name)
@@ -38,7 +45,7 @@ namespace OgreSimple
         std::map<std::string, Material*>::iterator it = mMaterials.find(name);
 		if (it != mMaterials.end())
 		{
-			return NULL;
+			return it->second;
 		}
 
 		Material* mat = new Material();

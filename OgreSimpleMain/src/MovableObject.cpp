@@ -126,12 +126,12 @@ namespace OgreSimple
 				};
 
 				SubMesh* sm = mMesh->createSubMesh();
-                sm->createVertexData(FVF_POSITION | FVF_UV, 4, false);
+                sm->createVertexData(FVF_POSITION | FVF_UV, 4, true);
                 sm->addVertices((uint8*)pSource, sizeof(pSource));
                 sm->mOperationType = RenderOperation::OT_TRIANGLE_LIST;
                 sm->setMaterialName(matName);
 
-                sm->createIndexData(IT_16BIT, 6, false);
+                sm->createIndexData(IT_16BIT, 6, true);
                 sm->addIndexes((uint8*)idx, sizeof(idx));
 
 			}

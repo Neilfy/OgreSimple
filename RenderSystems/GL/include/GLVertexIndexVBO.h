@@ -13,14 +13,18 @@ namespace OgreSimple
         GLVertexVBO();
         virtual ~GLVertexVBO();
 
-        virtual bool SetBufferData(const VertexData* vertexData);
-        virtual bool BindVertexBuffer();
+        virtual bool UpdateVBO()
+		{
+			mNeedUpdate = true;
+		};
+        virtual bool BindVertexBuffer(const VertexData* vertexData);
 		virtual bool UnBindVertexBuffer();
 
     protected:
         void releaseVBO();
 
     private:
+		bool mNeedUpdate;
         GLuint mBufferID;
     };
 
@@ -30,14 +34,18 @@ namespace OgreSimple
         GLIndexVBO();
         virtual ~GLIndexVBO();
 
-        virtual bool SetBufferData(const IndexData* indexData);
-        virtual bool BindIndexBuffer();
+        virtual bool UpdateVBO()
+		{
+			mNeedUpdate = true;
+		}
+        virtual bool BindIndexBuffer(const IndexData* indexData);
 		virtual bool UnBindIndexBuffer();
 
     protected:
         void releaseVBO();
 
     private:
+		bool mNeedUpdate;
         GLuint mBufferID;
     };
 }

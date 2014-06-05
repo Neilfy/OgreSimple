@@ -23,6 +23,13 @@ namespace OgreSimple
     "{\n"
     "   gl_FragColor = texture2D(Texture0, gl_TexCoord[0].st);"
     "}\n";
+
+	string BASIC_COLOR_FS = 
+	"void main()\n"
+	"{\n"
+	"	gl_FragColor = gl_Color;"
+	"}\n";
+
 	ShaderManager* ShaderManager::mSingleton = 0;
 
 	ShaderManager::ShaderManager(void)
@@ -78,6 +85,11 @@ namespace OgreSimple
             shader->SetShaderSource(BASIC_TEXTURE_FS);
             shader->SetShaderType(Shader::ST_FRAGMENT);
         }
+		else if(shaderName == "BasicObjectColor.frag")
+		{
+			shader->SetShaderSource(BASIC_COLOR_FS);
+			shader->SetShaderType(Shader::ST_FRAGMENT);
+		}
 		mShaders.insert(make_pair(shaderName, shader));
 		return shader;
 	}

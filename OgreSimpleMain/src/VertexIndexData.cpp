@@ -62,11 +62,10 @@ namespace OgreSimple
     {
         assert(mSizeInByte >= size);
         memcpy(mBuffer, buf, size);
-
-        if(mVBO)
-        {
-            mVBO->SetBufferData(this);
-        }
+		if(mVBO)
+		{
+			mVBO->UpdateVBO();
+		}
     }
 
     uint8* VertexData::getBuffer() const
@@ -78,7 +77,7 @@ namespace OgreSimple
     {
         if(mVBO)
         {
-            mVBO->BindVertexBuffer();
+            mVBO->BindVertexBuffer(this);
         }
     }
 
@@ -149,11 +148,10 @@ namespace OgreSimple
     {
         assert(mSizeInByte >= size);
         memcpy(mBuffer, buf, size);
-
-        if(mVBO)
-        {
-            mVBO->SetBufferData(this);
-        }
+		if(mVBO)
+		{
+			mVBO->UpdateVBO();
+		}
     }
 
     uint8* IndexData::getBuffer() const
@@ -165,7 +163,7 @@ namespace OgreSimple
     {
         if(mVBO)
         {
-            mVBO->BindIndexBuffer();
+            mVBO->BindIndexBuffer(this);
         }
     }
 

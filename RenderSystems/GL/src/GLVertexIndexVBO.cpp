@@ -12,29 +12,20 @@ namespace OgreSimple
         releaseVBO();
     }
 
-    bool GLVertexVBO::SetBufferData(const VertexData* vertexData)
+	bool GLVertexVBO::BindVertexBuffer(const VertexData* vertexData)
     {
-        if(!vertexData)
-        {
-            return false;
-        }
+		if(mNeedUpdate)
+		{
+			releaseVBO();
+			int size = vertexData->getBufferSize();
+			const GLvoid* pBuffer = vertexData->getBuffer();
+			glGenBuffersARB(1, &mBufferID);
+			glBindBuffer(GL_ARRAY_BUFFER, mBufferID);
+			glBufferData(GL_ARRAY_BUFFER, size, pBuffer, GL_STATIC_DRAW);
 
-        if(mBufferID != 0)
-        {
-            releaseVBO();
-        }
+			mNeedUpdate = false;
+		}
 
-        int size = vertexData->getBufferSize();
-        const GLvoid* pBuffer = vertexData->getBuffer();
-        glGenBuffersARB(1, &mBufferID);
-        glBindBuffer(GL_ARRAY_BUFFER, mBufferID);
-        glBufferData(GL_ARRAY_BUFFER, size, pBuffer, GL_STATIC_DRAW);
-
-        return true;
-    }
-
-    bool GLVertexVBO::BindVertexBuffer()
-    {
         if(mBufferID != 0)
         {
             glBindBuffer(GL_ARRAY_BUFFER, mBufferID);
@@ -42,6 +33,7 @@ namespace OgreSimple
         }
         return false;
     }
+
     bool GLVertexVBO::UnBindVertexBuffer()
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -71,30 +63,20 @@ namespace OgreSimple
         releaseVBO();
     }
 
-    bool GLIndexVBO::SetBufferData(const IndexData* indexData)
+    bool GLIndexVBO::BindIndexBuffer(const IndexData* indexData)
     {
-        if(!indexData)
-        {
-            return false;
-        }
+		if(mNeedUpdate)
+		{
+			releaseVBO();
+			int size = indexData->getBufferSize();
+			const GLvoid* pBuffer = indexData->getBuffer();
+			glGenBuffersARB(1, &mBufferID);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBufferID);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, pBuffer, GL_STATIC_DRAW);
 
-        if(mBufferID != 0)
-        {
-            releaseVBO();
-        }
+			mNeedUpdate = false;
+		}
 
-        int size = indexData->getBufferSize();
-        const GLvoid* pBuffer = indexData->getBuffer();
-        glGenBuffersARB(1, &mBufferID);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBufferID);
-        unsigned int err = glGetError();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, pBuffer, GL_STATIC_DRAW);
-
-        return true;
-    }
-
-    bool GLIndexVBO::BindIndexBuffer()
-    {
         if(mBufferID != 0)
         {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBufferID);

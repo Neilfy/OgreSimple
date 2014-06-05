@@ -110,7 +110,7 @@ namespace OgreSimple {
                         }
             SubMesh *sub = createSubMesh();
 			int size_byte = vecVertex.size() * sizeof(float);
-			sub->createVertexData(verType, vertex_count, false);
+			sub->createVertexData(verType, vertex_count, true);
             sub->addVertices((uint8*)&vecVertex[0], size_byte);
 
 			sub->setMaterialName(obj->material);
